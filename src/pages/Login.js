@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form"
 import { Button } from "../componentes/Button"
 import { TextField } from "../componentes/TextField"
-import { useLogin } from "../hooks/userAuth.js"
+import { useLogin, useLogout } from "../hooks/userAuth.js"
 import { Notification } from "../componentes/Notification.js"
 export const Login = () => {
 
     const { mutate } = useLogin()
+    const { mutate: mutateLogout } = useLogout()
     const { register, handleSubmit } = useForm();
 
     const handleLogin = async (data) => {
@@ -18,6 +19,10 @@ export const Login = () => {
             mutate(dataApi)
         }
 
+    }
+
+    const teste = {
+        user: "joao.pedro"
     }
     return (
         <div className="flex w-full h-screen overflow-hidden">
@@ -50,6 +55,7 @@ export const Login = () => {
                             placeholder="**********" />
                         <Button text="Acessar" type="submit" />
                     </form>
+                    <button type="button" onClick={() => (mutateLogout(teste))}>Deslogar</button>
                 </div>
             </div>
             <Notification />
