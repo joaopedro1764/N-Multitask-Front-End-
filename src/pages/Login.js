@@ -1,12 +1,11 @@
 import { useForm } from "react-hook-form"
 import { Button } from "../componentes/Button"
 import { TextField } from "../componentes/TextField"
-import { useLogin, useLogout } from "../hooks/userAuth.js"
+import { useLogin } from "../hooks/userAuth.js"
 import { Notification } from "../componentes/Notification.js"
 export const Login = () => {
 
     const { mutate } = useLogin()
-    const { mutate: mutateLogout } = useLogout()
     const { register, handleSubmit } = useForm();
 
     const handleLogin = async (data) => {
@@ -21,9 +20,6 @@ export const Login = () => {
 
     }
 
-    const teste = {
-        user: "joao.pedro"
-    }
     return (
         <div className="flex w-full h-screen overflow-hidden">
             <div className="xl:flex xl:flex-col xl:w-1/2 items-center hidden xl:h-full p-4 bg-black rounded-r-3xl shadow-2xl">
@@ -55,7 +51,7 @@ export const Login = () => {
                             placeholder="**********" />
                         <Button text="Acessar" type="submit" />
                     </form>
-                    <button type="button" onClick={() => (mutateLogout(teste))}>Deslogar</button>
+                 
                 </div>
             </div>
             <Notification />
