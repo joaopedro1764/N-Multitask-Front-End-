@@ -3,25 +3,19 @@ import { Login } from "./pages/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { Grafic } from "./pages/grafic";
+
 export const Rotas = () => {
 
-
-  console.log(Cookies.get("userAuth"))
+  const userAuth = Cookies.get("userAuth");
+  
 
   const RoutePrivate = ({ children }) => {
-    const userAuth = Cookies.get("userAuth");
-
-    if (userAuth !== undefined) {
-      return children;
-    } else {
-      return <Navigate to="/" />;
-    }
+    return userAuth !== undefined ? children : <Navigate to="/" />;
   };
-
 
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={userAuth !== undefined ? <Navigate to="/dashboard" /> : <Login />} />
       <Route path="/dashboard" element={
         <RoutePrivate>
           <Dashboard />
@@ -32,8 +26,6 @@ export const Rotas = () => {
           <Grafic />
         </RoutePrivate>
       } />
-
-
     </Routes>
   );
 }

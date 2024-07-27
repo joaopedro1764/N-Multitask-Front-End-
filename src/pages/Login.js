@@ -9,7 +9,6 @@ export const Login = () => {
     const { register, handleSubmit } = useForm();
 
     const handleLogin = async (data) => {
-
         if (data.password || data.user !== "") {
             const dataApi = {
                 user: data.user,
@@ -17,7 +16,6 @@ export const Login = () => {
             }
             mutate(dataApi)
         }
-
     }
 
     return (
@@ -43,7 +41,7 @@ export const Login = () => {
                         <TextField
                             {...register("user")}
                             type="text"
-                            placeholder="Ex: joao@gmail.com" />
+                            placeholder="Ex: Higor.Silva" />
                         <label className="text-start text-black font-kodchasan-bold text-1xl">Senha</label>
                         <TextField
                             {...register("password")}
@@ -51,7 +49,7 @@ export const Login = () => {
                             placeholder="**********" />
                         <Button text="Acessar" type="submit" />
                     </form>
-                 
+
                 </div>
             </div>
             <Notification />
