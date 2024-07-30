@@ -4,7 +4,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-       black:'#202020'
+       black:'#202020',
+       'black-dark': "#2D2D2D",
+       'gray-dark': "#6A6A6A"
       },
       fontFamily: {
         'kodchasan': ['Kodchasan-regular', 'sans-serif'],
