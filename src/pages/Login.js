@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form"
-import { Button } from "../componentes/Button"
-import { TextField } from "../componentes/TextField"
+import { Button } from "../componentes/Button/Button.js"
+import { TextField } from "../componentes/TextField/TextField.js"
 import { useLogin } from "../hooks/userAuth.js"
-import { Notification } from "../componentes/Notification.js"
+import { Notification } from "../componentes/Notification/Notification.js"
 export const Login = () => {
 
     const { mutate } = useLogin()
@@ -29,7 +29,7 @@ export const Login = () => {
                 <img
                     className="bg-center w-[80%]"
                     alt="Imagem Lateral Esquerda"
-                    src={require("../assets/icon-img.png")}
+                    src={require("../assets/IconTaskLogin.png")}
                 />
             </div>
             <div className="w-full xl:w-1/2 min-h-screen flex justify-center items-center">
