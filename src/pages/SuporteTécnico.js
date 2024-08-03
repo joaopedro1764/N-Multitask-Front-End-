@@ -3,8 +3,35 @@ import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import { Notification } from "../componentes/Notification/Notification"
 import PageviewIcon from '@mui/icons-material/Pageview';
 import { SideBar } from "../componentes/SideBar/SideBar"
+import { useEffect, useState } from 'react';
 
 export const SuporteTecnico = () => {
+
+    const [messages, setMessages] = useState([]);
+    const [input, setInput] = useState('');
+    const [ws, setWs] = useState(null);
+
+    useEffect(() => {
+        const socket = new WebSocket('http://10.0.30.151:8080');
+        setWs(socket);
+        socket.onmessage = (event) => {
+            setMessages((prevMessages) => [...prevMessages, event.data]);
+        };
+    }, []);
+
+    const sendMessage = () => {
+        setMessages([])
+        if (ws && ws.readyState === WebSocket.OPEN && input) {
+            ws.send(input);
+            ws.onmessage = (event) => {
+                setMessages((prevMessages) => [...prevMessages, event.data]);
+            };
+            console.log(messages)
+            setInput('');
+        } else {
+            alert('WebSocket is not open or input is empty');
+        }
+    };
 
     return (
         <div className="flex w-full h-screen bg-black-dark overflow-hidden">
@@ -18,7 +45,7 @@ export const SuporteTecnico = () => {
                     </div>
                 </div>
 
-                <div className="flex w-full h-full ml-44">
+                <div className="flex flex-col w-full h-full ml-44">
                     <div class="flex gap-9 h-10 mt-32">
                         <div className='flex bg-[#2D2D2D] w-52 rounded-sm p-4'>
                             <span onClick={() => alert("oi")}
@@ -48,7 +75,21 @@ export const SuporteTecnico = () => {
                             <span className='bg-[#FF5F49] font-bold text-md text-center rounded-xl min-w-28 py-0.5 px-4'>Atrasado</span>
                         </div>
                     </div>
-
+                    <h1>WebSocket Chat</h1>
+                    <div >
+                        <input
+                            type="text"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            placeholder="Type a message..."
+                        />
+                        <button onClick={() => sendMessage()}>Send</button>
+                    </div>
+                    <div className="messages">
+                        {messages.map((message, index) => (
+                            <div className='text-white font-bold text-3xl' key={index}>{message}</div>
+                        ))}
+                    </div>
                 </div>
             </main>
             <Notification />
