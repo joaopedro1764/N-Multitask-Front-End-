@@ -1,4 +1,4 @@
-import { Dashboard } from "./pages/DashBoard";
+import { SuporteTecnico } from "./pages/SuporteTécnico";
 import { Login } from "./pages/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Cookies from 'js-cookie';
@@ -7,7 +7,7 @@ import { Grafic } from "./pages/grafic";
 export const Rotas = () => {
 
   const userAuth = Cookies.get("userAuth");
-  
+
 
   const RoutePrivate = ({ children }) => {
     return userAuth !== undefined ? children : <Navigate to="/" />;
@@ -15,11 +15,11 @@ export const Rotas = () => {
 
   return (
     <Routes>
-      <Route path="/" element={userAuth !== undefined ? <Navigate to="/dashboard" /> : <Login />} />
-      <Route path="/dashboard" element={
+      <Route path="/" element={userAuth !== undefined ? <Navigate to="/suporteTecnico" /> : <Login />} />
+      <Route path="/suporteTecnico" element={
         //<RoutePrivate>
-          <Dashboard />
-       // </RoutePrivate>
+          <SuporteTecnico />
+        //</RoutePrivate>
       } />
       <Route path="/grafic" element={
         <RoutePrivate>
