@@ -1,5 +1,3 @@
-
-import './App.css';
 import { Rotas } from './Rotas';
 import { BrowserRouter } from 'react-router-dom';
 import { queryCliente } from './utils/queryClient';

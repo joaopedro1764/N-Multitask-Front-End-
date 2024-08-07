@@ -14,9 +14,8 @@ export const useLogin = () => {
     const mutate = useMutation({
         mutationFn: loginUser,
         onSuccess: (data) => {
-            showToast("Logado com sucessso" + data.data, "success")
             Cookies.set("userAuth", data.data)
-            navigate("/suporteTecnico")
+            window.location.href = "/suporteTecnico"
         },
         onError: (error) => {
             if (error.response.status === 401) {

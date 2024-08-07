@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { showToast } from '../componentes/Notification/Notification';
 
 const userAuth = (Cookies.get("userAuth"));
+console.log(userAuth)
 
 const logoutUser = async () => {
     return await axios.post("https://nmt.nmultifibra.com.br/notion/DeauthenticateUser", null, {
@@ -20,7 +21,7 @@ export const useLogout = () => {
         mutationFn: logoutUser,
         onSuccess: () => {
             Cookies.remove("userAuth")
-            navigate("/")
+            window.location.href = "/"
         },
         onError: (error) => {
             showToast(error.message, "error")

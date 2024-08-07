@@ -13,7 +13,7 @@ module.exports = {
         'kodchasan-bold': ['Kodchasan-bold', 'sans-serif'],
       },
       backgroundImage: {
-        'fundo-suporte': "url('/src/assets/fundoSuporte1.png')",
+        'fundo-suporte': "url('/src/assets/fundoSuporte.png')",
       }
     },
   },
