@@ -1,6 +1,8 @@
 [
     {
-        "name": "Backlog",
+        "name": "Casos Suporte",
+        "id": 1,
+    
         "items": [
             {
                 "id": 1,
@@ -15,24 +17,25 @@
                 ]
             },
             {
-                "id": 2,
-                "priority": 2,
-                "title": "Mobile app login process prototype.",
-                "chat": 10,
-                "attachment": 4,
+                "id": 1.2,
+                "priority": 0,
+                "title": "aaaaaa",
+                "chat": 1,
+                "attachment": 2,
                 "assignees": [
                     {
-                        "avt": "https://randomuser.me/api/portraits/men/67.jpg"
+                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
                     }
                 ]
             }
         ]
     },
     {
-        "name": "Backlog",
+        "name": "Atualização PPPOE",
+        "id": 2,
         "items": [
             {
-                "id": 1,
+                "id": 2,
                 "priority": 0,
                 "title": "Company website redesign.",
                 "chat": 1,
@@ -40,28 +43,17 @@
                 "assignees": [
                     {
                         "avt": "https://randomuser.me/api/portraits/men/75.jpg"
-                    }
-                ]
-            },
-            {
-                "id": 2,
-                "priority": 2,
-                "title": "Mobile app login process prototype.",
-                "chat": 10,
-                "attachment": 4,
-                "assignees": [
-                    {
-                        "avt": "https://randomuser.me/api/portraits/men/67.jpg"
                     }
                 ]
             }
         ]
     },
     {
-        "name": "Backlog",
+        "name": "O.S Aprimorar",
+        "id": 3,
         "items": [
             {
-                "id": 1,
+                "id": 3,
                 "priority": 0,
                 "title": "Company website redesign.",
                 "chat": 1,
@@ -69,28 +61,17 @@
                 "assignees": [
                     {
                         "avt": "https://randomuser.me/api/portraits/men/75.jpg"
-                    }
-                ]
-            },
-            {
-                "id": 2,
-                "priority": 2,
-                "title": "Mobile app login process prototype.",
-                "chat": 10,
-                "attachment": 4,
-                "assignees": [
-                    {
-                        "avt": "https://randomuser.me/api/portraits/men/67.jpg"
                     }
                 ]
             }
         ]
     },
     {
-        "name": "Backlog",
+        "name": "O.S Global",
+        "id": 4,
         "items": [
             {
-                "id": 1,
+                "id": 4,
                 "priority": 0,
                 "title": "Company website redesign.",
                 "chat": 1,
@@ -98,28 +79,17 @@
                 "assignees": [
                     {
                         "avt": "https://randomuser.me/api/portraits/men/75.jpg"
-                    }
-                ]
-            },
-            {
-                "id": 2,
-                "priority": 2,
-                "title": "Mobile app login process prototype.",
-                "chat": 10,
-                "attachment": 4,
-                "assignees": [
-                    {
-                        "avt": "https://randomuser.me/api/portraits/men/67.jpg"
                     }
                 ]
             }
         ]
     },
     {
-        "name": "Backlog",
+        "name": "O.S Reagendamento",
+        "id": 5,
         "items": [
             {
-                "id": 1,
+                "id": 5,
                 "priority": 0,
                 "title": "Company website redesign.",
                 "chat": 1,
@@ -129,16 +99,22 @@
                         "avt": "https://randomuser.me/api/portraits/men/75.jpg"
                     }
                 ]
-            },
+            }
+        ]
+    },
+    {
+        "name": "O.S Escallo",
+        "id": 6,
+        "items": [
             {
-                "id": 2,
-                "priority": 2,
-                "title": "Mobile app login process prototype.",
-                "chat": 10,
-                "attachment": 4,
+                "id": 6,
+                "priority": 0,
+                "title": "Company website redesign.",
+                "chat": 1,
+                "attachment": 2,
                 "assignees": [
                     {
-                        "avt": "https://randomuser.me/api/portraits/men/67.jpg"
+                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
                     }
                 ]
             }

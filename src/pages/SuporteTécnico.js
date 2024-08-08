@@ -6,19 +6,17 @@ import { SideBar } from "../componentes/SideBar/SideBar"
 import { useEffect, useState } from 'react';
 import Data from '../utils/data.json'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { CardItem } from '../componentes/CardItem/CardItem';
 
 export const SuporteTecnico = () => {
 
-    const initialItems = [
-        { id: 'item-1', content: 'Item 1' },
-        { id: 'item-2', content: 'Item 2' },
-        { id: 'item-3', content: 'Item 3' },
-    ];
-
     const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState('');
     const [ws, setWs] = useState(null);
-    const [items, setItems] = useState(initialItems);
+    const [items, setItems] = useState();
+    const [boardData, setBoardData] = useState(Data)
+    const [ready, setReady] = useState(false);
+    const [showForm, setShowForm] = useState(false);
+    const [selectedBoard, setSelectedBoard] = useState(0);
 
     useEffect(() => {
         const socket = new WebSocket('http://10.0.30.151:8080');
@@ -30,18 +28,22 @@ export const SuporteTecnico = () => {
 
 
 
-    const onDragEnd = (result) => {
-        // Verifica se o destino é válido
-        if (!result.destination) {
-            return;
-        }
-
-        // Reordena os itens
-        const reorderedItems = Array.from(items);
-        const [removed] = reorderedItems.splice(result.source.index, 1);
-        reorderedItems.splice(result.destination.index, 0, removed);
-
-        setItems(reorderedItems);
+    const onDragEnd = (re) => {
+        /*   //console.log(re)
+          if (!re.destination) return;
+          let newBoardData = boardData;
+          var dragItem =
+              newBoardData[parseInt(re.source.droppableId)].items[re.source.index];
+          newBoardData[parseInt(re.source.droppableId)].items.splice(
+              re.source.index,
+              1
+          );
+          newBoardData[parseInt(re.destination.droppableId)].items.splice(
+              re.destination.index,
+              0,
+              dragItem
+          );
+          setBoardData(newBoardData); */
     };
 
     return (
@@ -89,35 +91,45 @@ export const SuporteTecnico = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='flex w-full mt-8'>
-                        <DragDropContext onDragEnd={onDragEnd}>
-                            <div className="grid grid-cols-6 gap-5 my-5">
-                                <Droppable droppableId="droppable">
-                                    {(provided) => (
-                                        <div {...provided.droppableProps} ref={provided.innerRef}>
-                                            <h2 className='text-white'> A Fazer</h2>
-                                            {Data.map((item, index) => (
-                                                <Draggable key={item.id} draggableId={item.id} index={index}>
-                                                    {(provided) => (
-                                                        <div
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            className='flex bg-white p-4 mb-5 w-32'
-                                                        >
-                                                            <p>{item.name}</p>
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            ))}
-                                            {provided.placeholder}
-                                        </div>
-                                    )}
-                                </Droppable>
-                            </div>
-                        </DragDropContext>
-                    </div>
 
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <div className="grid grid-cols-6 gap-5 mt-10 overflow-x-auto">
+                            {Data.map((item, index) => {
+                                return (
+                                    <Droppable droppableId={item.name}>
+                                        {(provided) => (
+                                            <div
+                                                {...provided.droppableProps}
+                                                ref={provided.innerRef}
+                                            >
+                                                <div className={` bg-[#30384F] overflow-y-auto overflow-x-hidden h-auto p-3 rounded-md w-full`}
+                                                    style={{ maxHeight: 'calc(100vh - 290px)' }}>
+                                                    <span className={`text-2xl text-[white] w-full px-3 py-1.5 rounded-md ${item.name === "Casos Suporte" && 'bg-[#3C4F85]'} ${item.name === "O.S Global" && 'bg-red-900'} `}>
+                                                        {item.name}
+                                                    </span>
+                                                    <div className="overflow-y-auto overflow-x-hidden h-auto"
+                                                        style={{ maxHeight: 'calc(100vh - 290px)' }}>
+                                                        {item.items.length > 0 &&
+                                                            item.items.map((subItem, iIndex) => {
+                                                                return (
+                                                                    <CardItem
+                                                                        key={subItem.id}
+                                                                        data={subItem}
+                                                                        index={iIndex}
+                                                                        className="m-3"
+                                                                    />
+                                                                );
+                                                            })}
+                                                        {provided.placeholder}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </Droppable>
+                                );
+                            })}
+                        </div>
+                    </DragDropContext>
                 </div>
             </main>
             <Notification />
