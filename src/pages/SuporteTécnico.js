@@ -1,4 +1,3 @@
-import Brightness4Icon from '@mui/icons-material/Brightness4';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import { Notification } from "../componentes/Notification/Notification"
 import PageviewIcon from '@mui/icons-material/Pageview';
@@ -6,26 +5,28 @@ import { SideBar } from "../componentes/SideBar/SideBar"
 import { useEffect, useState } from 'react';
 import Data from '../utils/data.json'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { CardItem } from '../componentes/CardItem/CardItem';
+import { ColumnCard } from '../componentes/kanban/ColumnCard/ColumnCard';
+import { CardItem } from '../componentes/kanban/CardItem/CardItem';
+import { TopBar } from '../componentes/TopBar/TopBar';
 
 export const SuporteTecnico = () => {
 
-    const [messages, setMessages] = useState([]);
-    const [ws, setWs] = useState(null);
-    const [items, setItems] = useState();
-    const [boardData, setBoardData] = useState(Data)
-    const [ready, setReady] = useState(false);
-    const [showForm, setShowForm] = useState(false);
-    const [selectedBoard, setSelectedBoard] = useState(0);
-
-    useEffect(() => {
-        const socket = new WebSocket('http://10.0.30.151:8080');
-        setWs(socket);
-        socket.onmessage = (event) => {
-            setMessages((prevMessages) => [...prevMessages, event.data]);
-        };
-    }, []);
-
+    /*     const [messages, setMessages] = useState([]);
+        const [ws, setWs] = useState(null);
+        const [items, setItems] = useState();
+        const [boardData, setBoardData] = useState(Data)
+        const [ready, setReady] = useState(false);
+        const [showForm, setShowForm] = useState(false);
+        const [selectedBoard, setSelectedBoard] = useState(0);
+    
+        useEffect(() => {
+            const socket = new WebSocket('http://10.0.30.151:8080');
+            setWs(socket);
+            socket.onmessage = (event) => {
+                setMessages((prevMessages) => [...prevMessages, event.data]);
+            };
+        }, []);
+     */
 
 
     const onDragEnd = (re) => {
@@ -50,13 +51,7 @@ export const SuporteTecnico = () => {
         <div className="flex w-full h-screen bg-black-dark overflow-hidden">
             <SideBar />
             <main className="bg-black-dark w-full h-screen flex flex-col">
-                <div className="min-w-screen flex justify-center h-72 bg-fundo-suporte bg-center bg-cover bg-no-repeat">
-                    <Brightness4Icon className="text-white absolute right-5 top-4 cursor-pointer hover:text-blue-200 duration-300" />
-                    <div className="flex flex-col gap-y-10 justify-center items-center">
-                        <h2 className="text-center text-6xl text-white font-bold">TASKS DEMANDAS</h2>
-                        <span className="text-slate-300 text-3xl font-bold">SUPORTE TÉCNICO</span>
-                    </div>
-                </div>
+                <TopBar title="TASKS DEMANDAS SUPORTE"/>
                 <div className='flex flex-col w-full h-full ml-44'>
                     <div className='flex flex-col w-full'>
                         <div className="flex w-full">
@@ -91,48 +86,20 @@ export const SuporteTecnico = () => {
                             </div>
                         </div>
                     </div>
-
                     <DragDropContext onDragEnd={onDragEnd}>
                         <div className="grid grid-cols-6 gap-5 mt-10 overflow-x-auto">
-                            {Data.map((item, index) => {
-                                return (
-                                    <Droppable droppableId={item.name}>
-                                        {(provided) => (
-                                            <div
-                                                {...provided.droppableProps}
-                                                ref={provided.innerRef}
-                                            >
-                                                <div className={` bg-[#30384F] overflow-y-auto overflow-x-hidden h-auto p-3 rounded-md w-full`}
-                                                    style={{ maxHeight: 'calc(100vh - 290px)' }}>
-                                                    <span className={`text-2xl text-[white] w-full px-3 py-1.5 rounded-md ${item.name === "Casos Suporte" && 'bg-[#3C4F85]'} ${item.name === "O.S Global" && 'bg-red-900'} `}>
-                                                        {item.name}
-                                                    </span>
-                                                    <div className="overflow-y-auto overflow-x-hidden h-auto"
-                                                        style={{ maxHeight: 'calc(100vh - 290px)' }}>
-                                                        {item.items.length > 0 &&
-                                                            item.items.map((subItem, iIndex) => {
-                                                                return (
-                                                                    <CardItem
-                                                                        key={subItem.id}
-                                                                        data={subItem}
-                                                                        index={iIndex}
-                                                                        className="m-3"
-                                                                    />
-                                                                );
-                                                            })}
-                                                        {provided.placeholder}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </Droppable>
-                                );
-                            })}
+                            {Data.map((data, index) => (
+                                <ColumnCard
+                                    key={data.id}
+                                    task={data}
+                                    index={index}
+                                />
+                            ))}
                         </div>
                     </DragDropContext>
                 </div>
-            </main>
+            </main >
             <Notification />
-        </div>
+        </div >
     )
 }

@@ -2,26 +2,12 @@
     {
         "name": "Casos Suporte",
         "id": 1,
-    
         "items": [
             {
                 "id": 1,
                 "priority": 0,
-                "title": "Company website redesign.",
+                "title": "145778 - Gabriel Marques.",
                 "chat": 1,
-                "attachment": 2,
-                "assignees": [
-                    {
-                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
-                    }
-                ]
-            },
-            {
-                "id": 1.2,
-                "priority": 0,
-                "title": "aaaaaa",
-                "chat": 1,
-                "attachment": 2,
                 "assignees": [
                     {
                         "avt": "https://randomuser.me/api/portraits/men/75.jpg"
@@ -37,9 +23,8 @@
             {
                 "id": 2,
                 "priority": 0,
-                "title": "Company website redesign.",
+                "title": "33555 - André Ferreira",
                 "chat": 1,
-                "attachment": 2,
                 "assignees": [
                     {
                         "avt": "https://randomuser.me/api/portraits/men/75.jpg"
@@ -57,7 +42,6 @@
                 "priority": 0,
                 "title": "Company website redesign.",
                 "chat": 1,
-                "attachment": 2,
                 "assignees": [
                     {
                         "avt": "https://randomuser.me/api/portraits/men/75.jpg"
@@ -69,55 +53,16 @@
     {
         "name": "O.S Global",
         "id": 4,
-        "items": [
-            {
-                "id": 4,
-                "priority": 0,
-                "title": "Company website redesign.",
-                "chat": 1,
-                "attachment": 2,
-                "assignees": [
-                    {
-                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
-                    }
-                ]
-            }
-        ]
+        "items": []
     },
     {
         "name": "O.S Reagendamento",
         "id": 5,
-        "items": [
-            {
-                "id": 5,
-                "priority": 0,
-                "title": "Company website redesign.",
-                "chat": 1,
-                "attachment": 2,
-                "assignees": [
-                    {
-                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
-                    }
-                ]
-            }
-        ]
+        "items": []
     },
     {
         "name": "O.S Escallo",
         "id": 6,
-        "items": [
-            {
-                "id": 6,
-                "priority": 0,
-                "title": "Company website redesign.",
-                "chat": 1,
-                "attachment": 2,
-                "assignees": [
-                    {
-                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
-                    }
-                ]
-            }
-        ]
+        "items": []
     }
 ]
