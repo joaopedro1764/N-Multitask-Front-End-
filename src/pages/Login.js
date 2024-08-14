@@ -1,58 +1,50 @@
 import { useForm } from "react-hook-form"
-import { Button } from "../componentes/Button/Button.js"
-import { TextField } from "../componentes/TextField/TextField.js"
 import { useLogin } from "../hooks/userAuth.js"
-import { Notification } from "../componentes/Notification/Notification.js"
+import { Notification, showToast } from "../componentes/Notification/Notification.js"
 export const Login = () => {
 
-    const { mutate } = useLogin()
-    const { register, handleSubmit } = useForm();
+    const { mutate } = useLogin();
+    const { handleSubmit, register, setFocus } = useForm()
 
     const handleLogin = async (data) => {
-        if (data.password || data.user !== "") {
+        if (data.user === "") {
+            setFocus("user");
+            showToast("Preencha o campo usuário!", "error");
+        } else if (data.password === "") {
+            setFocus("password");
+            showToast("Preencha o campo senha!", "error");
+        } else {
             const dataApi = {
                 user: data.user,
                 passwd: data.password
-            }
+            };
             mutate(dataApi)
         }
     }
 
-    return (
-        <div className="flex w-full h-screen overflow-hidden">
-            <div className="xl:flex xl:flex-col xl:w-1/2 items-center hidden xl:h-full p-4 bg-black rounded-r-3xl shadow-2xl">
-                <img
-                    className="bg-center w-[40%] mt-16"
-                    alt="Imagem Lateral Esquerda"
-                    src={require("../assets/logo.png")}
-                />
-                <img
-                    className="bg-center w-[80%]"
-                    alt="Imagem Lateral Esquerda"
-                    src={require("../assets/IconTaskLogin.png")}
-                />
-            </div>
-            <div className="w-full xl:w-1/2 min-h-screen flex justify-center items-center">
-                <div className="flex flex-col h-[700px] mx-auto w-[600px] shadow-xl border-l-gray-200 border-l-4 border-b-[6px] border-r-[6px] p-6 border-r-black border-b-black rounded-xl">
-                    <h2 className="text-6xl text-center font-medium text-black  font-kodchasan-bold">LOGIN</h2>
-                    <span className="text-center text-black mt-4 font-kodchasan-bold">Gerenciador de Tarefas</span>
-                    <form onSubmit={handleSubmit(handleLogin)} className="my-auto flex flex-col gap-4">
-                        <label className="text-black font-kodchasan-bold text-1xl">Usuário</label>
-                        <TextField
-                            {...register("user")}
-                            type="text"
-                            placeholder="Ex: Higor.Silva" />
-                        <label className="text-start text-black font-kodchasan-bold text-1xl">Senha</label>
-                        <TextField
-                            {...register("password")}
-                            type="password"
-                            placeholder="**********" />
-                        <Button text="Acessar" type="submit" />
-                    </form>
 
+    return (
+
+        <div className="w-full h-screen bg-fundo-login bg-center bg-no-repeat bg-cover overflow-hidden">
+            <div className="flex w-full h-full my-40 justify-center">
+                <div className="hidden lg:w-[60%] lg:flex flex-col items-center mt-10">
+                    <span className="text-white text-4xl text-start font-kodchasan-bold w-[450px]">Um sistema completo e dinâmico para demandas cotidianas.</span>
+                    <img width={"52%"} alt="Imagem " src={require("../assets/iconLogin.png")} />
+                </div>
+                <div className="flex flex-col w-[500px] bg-white rounded-md h-[700px] lg:mx-auto">
+                    <img className="mt-6 w-72 mx-auto" alt="Imagem " src={require("../assets/LogoSSA.png")} />
+                    <form className="w-full flex flex-col mt-10 gap-4 p-6" onSubmit={handleSubmit(handleLogin)}>
+                        <label className="text-gray-600 text-xl -mb-3 font-bold">Usuário:</label>
+                        <input {...register("user")} type="text" placeholder="Digite o usuário..." className="w-full px-3 py-4 border-b-2 border-gray-600 rounded-sm focus:outline-none focus:ring-1 focus:border-none focus:ring-black placeholder-gray-400" />
+                        <label className="text-gray-600 text-xl -mb-3 font-bold">Senha:</label>
+                        <input {...register("password")} type="password" placeholder="Digite a senha..." className="w-full px-3 py-4 border-b-2 border-gray-600  rounded-sm focus:outline-none focus:ring-1 focus:border-none focus:ring-black placeholder-gray-400" />
+                        <button className="p-4 bg-black text-white rounded-md mt-20">Entrar</button>
+                    </form>
                 </div>
             </div>
             <Notification />
-        </div >
+        </div>
+
+
     )
 }

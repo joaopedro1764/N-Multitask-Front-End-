@@ -17,12 +17,12 @@ export const Rotas = () => {
     <Routes>
       <Route path="/" element={userAuth !== undefined ? <Navigate to="/suporteTecnico" /> : <Login />} />
       <Route path="/suporteTecnico" element={
-        // <RoutePrivate>
-        <SuporteTecnico />
-        // </RoutePrivate>
+        <RoutePrivate>
+          <SuporteTecnico />
+        </RoutePrivate>
       } />
       <Route path="/grafic" element={
-          <Grafic />
+        <Grafic />
       } />
     </Routes>
   );

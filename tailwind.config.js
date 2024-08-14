@@ -8,13 +8,12 @@ module.exports = {
       },
       fontFamily: {
         'kodchasan': ['Kodchasan-regular', 'sans-serif'],
-      },
-      fontFamily: {
         'kodchasan-bold': ['Kodchasan-bold', 'sans-serif'],
       },
       backgroundImage: {
-        'fundo-suporte': "url('/src/assets/fundoSuporte.png')",
-      }
+        'fundo-suporte': "url('/src/assets/FundoSuporte.png')",
+        'fundo-login': "url('/src/assets/FundoLogin.png')",
+      },
     },
   },
   plugins: [],
