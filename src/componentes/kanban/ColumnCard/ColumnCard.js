@@ -1,9 +1,7 @@
 import { Droppable } from "react-beautiful-dnd";
 import { CardItem } from "../CardItem/CardItem";
 
-export const ColumnCard = ({ task }) => {
-
-
+export const ColumnCard = ({ task, index }) => {
 
     const getColumnColor = (task) => {
         switch (task.name) {
@@ -19,13 +17,16 @@ export const ColumnCard = ({ task }) => {
                 return 'bg-[#470A64]';
             case 'O.S Escallo':
                 return 'bg-[#640A4B]';
+                case 'Solucionados':
+                    return 'bg-[#640A4B]';
+            
         }
     }
 
     const colorColumn = getColumnColor(task)
 
     return (
-        <Droppable droppableId={task.name}>
+        <Droppable droppableId={index.toString()}>
             {(provided) => (
                 <div
                     ref={provided.innerRef}

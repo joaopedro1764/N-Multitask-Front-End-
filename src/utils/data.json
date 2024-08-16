@@ -1,68 +1,241 @@
 [
     {
-        "name": "Casos Suporte",
-        "id": 1,
+        "name":"Casos Suporte",
         "items": [
             {
-                "id": 1,
-                "priority": 0,
-                "title": "145778 - Gabriel Marques.",
-                "chat": 1,
-                "assignees": [
-                    {
-                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "name": "Atualização PPPOE",
-        "id": 2,
-        "items": [
-            {
-                "id": 2,
-                "priority": 0,
-                "title": "33555 - André Ferreira",
-                "chat": 1,
-                "assignees": [
-                    {
-                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "name": "O.S Aprimorar",
-        "id": 3,
-        "items": [
-            {
-                "id": 3,
+                "id":1,
                 "priority": 0,
                 "title": "Company website redesign.",
                 "chat": 1,
+                "attachment": 2,
                 "assignees": [
                     {
                         "avt": "https://randomuser.me/api/portraits/men/75.jpg"
+                    }
+                ]
+            },
+            {
+                "id":2,
+                "priority": 2,
+                "title": "Mobile app login process prototype.",
+                "chat": 10,
+                "attachment": 4,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/67.jpg"
                     }
                 ]
             }
         ]
     },
     {
-        "name": "O.S Global",
-        "id": 4,
-        "items": []
+        "name":"Atualização PPPOE",
+        "items": [
+            {
+                "id":3,
+                "priority": 1,
+                "title": "Research and strategy for upcoming project.",
+                "chat": 0,
+                "attachment": 3,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/79.jpg"
+                    }
+                ]
+            }
+        ]
     },
     {
-        "name": "O.S Reagendamento",
-        "id": 5,
-        "items": []
+        "name":"O.S Aprimorar",
+        "items": [
+            {
+                "id":4,
+                "priority": 2,
+                "title": "Dashboard layout redesign.",
+                "chat": 13,
+                "attachment": 2,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
+                    }
+                ]
+            },
+            {
+                "id":5,
+                "priority": 0,
+                "title": "Social media posts",
+                "chat": 0,
+                "attachment": 0,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/68.jpg"
+                    }
+                ]
+            }
+        ]
     },
     {
-        "name": "O.S Escallo",
-        "id": 6,
-        "items": []
+        "name":"O.S Global",
+        "items": [
+            {
+                "id":6,
+                "priority": 0,
+                "title": "Review client spec document and give feedback.",
+                "chat": 13,
+                "attachment": 2,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
+                    }
+                ]
+            },
+            {
+                "id":7,
+                "priority": 1,
+                "title": "Navigation designs",
+                "chat": 0,
+                "attachment": 0,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/68.jpg"
+                    }
+                ]
+            },
+            {
+                "id":8,
+                "priority": 2,
+                "title": "Create style guide based on previous feedback",
+                "chat": 5,
+                "attachment": 2,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/64.jpg"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name":"O.S Escallo",
+        "items": [
+            {
+                "id":9,
+                "priority": 0,
+                "title": "Review client spec document and give feedback.",
+                "chat": 13,
+                "attachment": 2,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
+                    }
+                ]
+            },
+            {
+                "id":10,
+                "priority": 1,
+                "title": "Navigation designs",
+                "chat": 0,
+                "attachment": 0,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/68.jpg"
+                    }
+                ]
+            },
+            {
+                "id":11,
+                "priority": 2,
+                "title": "Create style guide based on previous feedback",
+                "chat": 5,
+                "attachment": 2,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/64.jpg"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name":"O.S Reagendamento",
+        "items": [
+            {
+                "id":12,
+                "priority": 0,
+                "title": "Review client spec document and give feedback.",
+                "chat": 13,
+                "attachment": 2,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
+                    }
+                ]
+            },
+            {
+                "id":13,
+                "priority": 1,
+                "title": "Navigation designs",
+                "chat": 0,
+                "attachment": 0,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/68.jpg"
+                    }
+                ]
+            },
+            {
+                "id":14,
+                "priority": 2,
+                "title": "Create style guide based on previous feedback",
+                "chat": 5,
+                "attachment": 2,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/64.jpg"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name":"Solucionados",
+        "items": [
+            {
+                "id":15,
+                "priority": 0,
+                "title": "Review client spec document and give feedback.",
+                "chat": 13,
+                "attachment": 2,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/75.jpg"
+                    }
+                ]
+            },
+            {
+                "id":16,
+                "priority": 1,
+                "title": "Navigation designs",
+                "chat": 0,
+                "attachment": 0,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/68.jpg"
+                    }
+                ]
+            },
+            {
+                "id":17,
+                "priority": 2,
+                "title": "Create style guide based on previous feedback",
+                "chat": 5,
+                "attachment": 2,
+                "assignees": [
+                    {
+                        "avt": "https://randomuser.me/api/portraits/men/64.jpg"
+                    }
+                ]
+            }
+        ]
     }
 ]
