@@ -25,6 +25,8 @@ export const ColumnCard = ({ task, index }) => {
 
     const colorColumn = getColumnColor(task)
 
+    console.log(task)
+
     return (
         <Droppable droppableId={index.toString()}>
             {(provided) => (

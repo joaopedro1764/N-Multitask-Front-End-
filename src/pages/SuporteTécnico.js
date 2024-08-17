@@ -2,7 +2,7 @@ import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import { Notification, showToast } from "../componentes/Notification/Notification"
 import PageviewIcon from '@mui/icons-material/Pageview';
 import { SideBar } from "../componentes/SideBar/SideBar"
-import { useCallback, useEffect, useReducer, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Data from '../utils/data.json'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ColumnCard } from '../componentes/kanban/ColumnCard/ColumnCard';
@@ -11,6 +11,24 @@ import { TopBar } from '../componentes/TopBar/TopBar';
 export const SuporteTecnico = () => {
 
     const [boardData, setBoardData] = useState(Data);
+    const [ws, setWs] = useState();
+    const [dataTeste, setDataTeste] = useState();
+
+    useEffect(() => {
+        const socket = new WebSocket('wss://nmt.nmultifibra.com.br/notion/ws');
+        setWs(socket);
+
+        socket.onopen = function () {
+            console.log('Conexão estabelecida.');
+        };
+
+        socket.onmessage = function (event) {
+            const data = JSON.parse(event.data)
+            console.log(data)
+            setDataTeste(data.data)
+        };
+    }, []);
+
 
     const onDragEnd = (re) => {
         if (!re.destination) return;
@@ -19,7 +37,7 @@ export const SuporteTecnico = () => {
         const sourceDroppableId = parseInt(re.source.droppableId);
 
         // Verifique se a coluna de destino é "Solucionados"
-        const solvedColumnId = boardData.length - 1; // Por exemplo, o ID da coluna "Solucionados" é 2
+        const solvedColumnId = boardData.length - 1;
         if (destinationDroppableId !== solvedColumnId) {
             return;
         }
@@ -32,15 +50,21 @@ export const SuporteTecnico = () => {
         setBoardData(newBoardData);
     };
 
+    const teste = () => {
+        console.log("click")
+        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Teste2", assignee: "Teste", title: "Teste", description: "Teste", created_by: "Teste", lineAddress: "Teste", province: "Teste", city: "Teste", team: "Teste" } });
+        ws.send(message);
+    }
+
 
 
 
     return (
-        <div className="flex w-screen h-screen bg-black-dark overflow-hidden">
+        <div className="flex w-screen h-screen bg-black-dark">
             <SideBar />
-            <main className="bg-black-dark w-full flex flex-col">
+            <main className="w-full flex flex-col">
                 <TopBar title="TASKS DEMANDAS SUPORTE" />
-                <div className='flex flex-col min-w-full mx-10'>
+                <div className='flex flex-col w-full ml-80'>
                     <div className="flex w-full">
                         <div className="flex gap-9 h-12 mt-32">
                             <div className='flex bg-[#2D2D2D] w-52 rounded-sm p-3'>
@@ -60,7 +84,7 @@ export const SuporteTecnico = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='flex flex-col ml-32 w-96 h-32 bg-[#2D2D2D] rounded-sm px-4 py-2 mt-12'>
+                        <div className='flex flex-col ml-72 w-96 h-32 bg-[#2D2D2D] rounded-sm px-4 py-2 mt-12'>
                             <span className='text-white text-2xl font-bold'>Status</span>
                             <p className='text-slate-500 text-xs'>O que cada cor significa:</p>
                             <div className='flex gap-3 mt-6'>
@@ -68,19 +92,28 @@ export const SuporteTecnico = () => {
                                 <span className='bg-[#FFDD63] font-bold text-md text-center rounded-xl min-w-28 py-0.5 px-4'>Pendente</span>
                                 <span className='bg-[#FF5F49] font-bold text-md text-center rounded-xl min-w-28 py-0.5 px-4'>Atrasado</span>
                             </div>
+                            <button onClick={teste}>Oi</button>
                         </div>
                     </div>
 
-                    <div className="mt-10 overflow-x-auto">
+                    <div className="flex-1 w-screen bg-black-dark mt-10 overflow-auto">
                         <DragDropContext onDragEnd={onDragEnd}>
                             <div className="flex space-x-5">
-                                {boardData.map((data, index) => (
-                                    <ColumnCard
-                                        key={data.id}
-                                        task={data}
-                                        index={index}
-                                    />
-                                ))}
+                                {boardData.map((data, index) => {
+
+                                    if (data.name === dataTeste.status) {
+                                        let t = boardData[data.name].items[dataTeste];
+
+                                        console.log(t)
+                                    }
+                                    return (
+                                        <ColumnCard
+                                            key={index}
+                                            task={data}
+                                            index={index}
+                                        />
+                                    )
+                                })}
                             </div>
                         </DragDropContext>
                     </div>
