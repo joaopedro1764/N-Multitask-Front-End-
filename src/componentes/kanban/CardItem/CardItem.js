@@ -2,7 +2,10 @@ import { Draggable } from 'react-beautiful-dnd';
 
 export const CardItem = ({ task, index, taskItem }) => {
 
-    
+/*     const removeCard = () > {
+
+    } */
+
 
     const getCardColor = (task) => {
         switch (task.name) {
@@ -27,13 +30,13 @@ export const CardItem = ({ task, index, taskItem }) => {
         <Draggable key={taskItem.id} index={index} draggableId={taskItem.id.toString()}>
             {(provided, snapshot) => (
                 <div
-                    onClick={() => alert("Teste")}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     className={`border-l-[12px] border-orange-600 rounded-md mt-10 shadow-2xl ${colorCard} h-32 ${snapshot.isDragging ? 'bg-blue-700' : ''}`}
                 >
                     <h5 className="text-md my-3">{taskItem.title}</h5>
+                    <button onClick={() => console.log(taskItem)}>Remover</button>
                 </div>
             )}
         </Draggable>

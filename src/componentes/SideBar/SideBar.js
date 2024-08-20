@@ -7,9 +7,9 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Notification } from "../Notification/Notification";
 import { useState } from "react";
 import { useLogout } from "../../hooks/userLogOut";
-export const SideBar = () => {
+export const SideBar = ({ openSideBar, setOpenSideBar }) => {
 
-    const [open, setOpen] = useState(true)
+
     const { mutate } = useLogout();
     const Menus = [
         { title: "Suporte Técnico", icon: <ContactPhoneIcon />, page: "/suporteTecnico" },
@@ -19,12 +19,12 @@ export const SideBar = () => {
     ];
 
     return (
-        <div className={`fixed h-screen z-10 bg-black-dark rounded-r-md border-r-white border-r-[6px] ${open ? 'w-72' : 'w-28'}`}>
+        <div className={`fixed h-screen z-10 bg-black-dark rounded-r-md border-r-white border-r-[6px] ${openSideBar ? 'w-72' : 'w-28'}`}>
             <KeyboardDoubleArrowLeftIcon
-                onClick={() => setOpen(!open)}
-                className={`!w-10 !h-10 absolute text-white right-3 top-3 cursor-pointer ${!open && 'rotate-180'}`}
+                onClick={() => setOpenSideBar(!openSideBar)}
+                className={`!w-10 !h-10 absolute text-white right-3 top-3 cursor-pointer ${!openSideBar && 'rotate-180'}`}
             />
-            {open ? (
+            {openSideBar ? (
                 <img className="w-60 mt-24 mx-auto" alt="Logo SideBar" src={require("../../assets/logo.png")} />
             ) : (
                 <img className="w-12 mt-24 mx-auto" alt="Logo SideBar Pequena" src={require("../../assets/logoN.png")} />
@@ -35,17 +35,17 @@ export const SideBar = () => {
                     <a
                         href={item.page}
                         className={`flex items-center w-full gap-x-4 text-white px-5 py-3 
-                        cursor-pointer hover:text-black-dark hover:bg-white ${index === 0 && 'bg-white !text-black-dark'} ${!open && 'justify-center'} `}
+                        cursor-pointer hover:text-black-dark hover:bg-white ${index === 0 && 'bg-white !text-black-dark'} ${!openSideBar && 'justify-center'} `}
                         key={index}
                     >
                         {item.icon}
-                        <span className={`${!open && 'hidden'} font-medium duration-300 text-sm`}>{item.title}</span>
+                        <span className={`${!openSideBar && 'hidden'} font-medium duration-300 text-sm`}>{item.title}</span>
                     </a>
                 ))}
 
-                <div className={`w-full h-20 flex items-center justify-center gap-x-4 rounded-md px-3 py-4 absolute bottom-6 ${!open && 'flex-col gap-3'}`}>
+                <div className={`w-full h-20 flex items-center justify-center gap-x-4 rounded-md px-3 py-4 absolute bottom-6 ${!openSideBar && 'flex-col gap-3'}`}>
                     <img className="w-14" alt="Foto usuário" src={require("../../assets/icon.png")} />
-                    <span className={`${!open && 'hidden'} text-white text-center font-medium text-xs`}>Gabriel Marques</span>
+                    <span className={`${!openSideBar && 'hidden'} text-white text-center font-medium text-xs`}>Gabriel Marques</span>
                     <ExitToAppIcon onClick={mutate} className="!text-center !w-8 !cursor-pointer" />
                 </div>
             </div>
