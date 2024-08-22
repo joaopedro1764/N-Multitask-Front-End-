@@ -7,7 +7,8 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Notification } from "../Notification/Notification";
 import { useState } from "react";
 import { useLogout } from "../../hooks/userLogOut";
-export const SideBar = ({ openSideBar, setOpenSideBar }) => {
+export const SideBar = ({openSideBar, setOpenSideBar}) => {
+
 
 
     const { mutate } = useLogout();
@@ -19,10 +20,10 @@ export const SideBar = ({ openSideBar, setOpenSideBar }) => {
     ];
 
     return (
-        <div className={`fixed h-screen z-10 bg-black-dark rounded-r-md border-r-white border-r-[6px] ${openSideBar ? 'w-72' : 'w-28'}`}>
+        <div className={`h-screen bg-black-dark  rounded-r-md border-r-white border-r-[6px] ${openSideBar ? 'min-w-72' : 'min-w-28'}`}>
             <KeyboardDoubleArrowLeftIcon
                 onClick={() => setOpenSideBar(!openSideBar)}
-                className={`!w-10 !h-10 absolute text-white right-3 top-3 cursor-pointer ${!openSideBar && 'rotate-180'}`}
+                className={`!w-10 !h-10 text-white cursor-pointer !mt-4 !float-right ${!openSideBar && 'rotate-180'}`}
             />
             {openSideBar ? (
                 <img className="w-60 mt-24 mx-auto" alt="Logo SideBar" src={require("../../assets/logo.png")} />
@@ -43,7 +44,7 @@ export const SideBar = ({ openSideBar, setOpenSideBar }) => {
                     </a>
                 ))}
 
-                <div className={`w-full h-20 flex items-center justify-center gap-x-4 rounded-md px-3 py-4 absolute bottom-6 ${!openSideBar && 'flex-col gap-3'}`}>
+                <div className={`w-full h-20 flex items-center justify-center gap-x-4 rounded-md px-3 py-4 mt-72 ${!openSideBar && 'flex-col gap-3'}`}>
                     <img className="w-14" alt="Foto usuário" src={require("../../assets/icon.png")} />
                     <span className={`${!openSideBar && 'hidden'} text-white text-center font-medium text-xs`}>Gabriel Marques</span>
                     <ExitToAppIcon onClick={mutate} className="!text-center !w-8 !cursor-pointer" />

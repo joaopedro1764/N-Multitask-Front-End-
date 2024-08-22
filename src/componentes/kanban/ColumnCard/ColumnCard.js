@@ -17,9 +17,9 @@ export const ColumnCard = ({ task, index }) => {
                 return 'bg-[#470A64]';
             case 'O.S Escallo':
                 return 'bg-[#640A4B]';
-                case 'Solucionados':
-                    return 'bg-[#640A4B]';
-            
+            case 'Solucionados':
+                return 'bg-[#640A4B]';
+
         }
     }
 
@@ -32,11 +32,11 @@ export const ColumnCard = ({ task, index }) => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                 >
-                    <div className={`overflow-x-auto h-auto p-2 rounded-md ${colorColumn}`} style={{ maxHeight: 'calc(100vh - 290px)' }}>
+                    <div className={`overflow-y-auto p-2 rounded-md ${colorColumn}`}>
                         <div className="flex gap-4 items-center text-white">
-                        <span className="w-2 h-2 bg-white rounded-full"/>
-                        <span>{task.name}</span>
-                        <span className="ml-12">{task.items?.length}</span>
+                            <span className="w-2 h-2 bg-white rounded-full" />
+                            <span className="">{task.name}</span>
+                            <span className="ml-12">{task.items?.length}</span>
                         </div>
                         {task.items.length > 0 &&
                             task.items.map((taskItem, taskID) => (
