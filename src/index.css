@@ -11,3 +11,26 @@
     font-family: "Kodchasan-regular";
     src: url("./fonts/Kodchasan/Kodchasan-Regular.ttf");
 }
+
+
+@layer utilities {
+    .scrollbar-thin::-webkit-scrollbar {
+        height: 10px;
+        /* Altura do scrollbar horizontal */
+        width: 5px;
+        /* Largura do scrollbar vertical */
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: #000000;
+        /* Cor do thumb */
+        border-radius: 6px;
+        /* Bordas arredondadas */
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: white;
+        /* Fundo do track */
+    }
+
+}

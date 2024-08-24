@@ -26,5 +26,9 @@
     {
         "name": "Solucionados",
         "items": []
+    },
+    {
+        "name": "Não Solucionado",
+        "items": []
     }
 ]
