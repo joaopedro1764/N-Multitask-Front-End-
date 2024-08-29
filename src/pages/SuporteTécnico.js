@@ -1,12 +1,11 @@
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
-import { Notification } from "../componentes/Notification/Notification"
 import PageviewIcon from '@mui/icons-material/Pageview';
+import AddIcon from '@mui/icons-material/Add';
 import { SideBar } from "../componentes/SideBar/SideBar"
 import { useEffect, useState } from 'react';
 import Data from '../utils/data.json'
 import { DragDropContext } from 'react-beautiful-dnd';
 import { ColumnCard } from '../componentes/kanban/ColumnCard/ColumnCard';
-import { TopBar } from '../componentes/TopBar/TopBar';
 
 export const SuporteTecnico = () => {
 
@@ -15,7 +14,6 @@ export const SuporteTecnico = () => {
     const [boardData, setBoardData] = useState(Data);
     const [ws, setWs] = useState();
     const [dataTeste, setDataTeste] = useState([]);
-
 
     const [open, setOpen] = useState(false);
     useEffect(() => {
@@ -38,45 +36,50 @@ export const SuporteTecnico = () => {
         const destinationDroppableId = parseInt(re.destination.droppableId);
         const sourceDroppableId = parseInt(re.source.droppableId);
 
-        // Verifique se a coluna de destino é "Solucionados"
-        const solvedColumnId = boardData.length - 1;
-        if (destinationDroppableId !== solvedColumnId) {
 
+        const columnNoCompleted = boardData.length - 1;
+        const columnCompleted = boardData.length - 2;
+        let newBoardData = [...boardData];
+        var dragItem = newBoardData[sourceDroppableId].items[re.source.index];
+
+
+        if (destinationDroppableId === columnCompleted) {
+            dragItem.status = "Concluidos"
+        }
+        else if (destinationDroppableId === columnNoCompleted) {
+            dragItem.status = "Não Solucionado"
+        } else {
             return;
         }
-        let newBoardData = [...boardData]; // Faz uma cópia do boardData
-        var dragItem = newBoardData[sourceDroppableId].items[re.source.index];
         console.log(dragItem)
-        dragItem.status = "Solucionados"
-        console.log(dragItem)
-
         const message = JSON.stringify({
             type: 'custom_action',
             action: 'updateCard',
             input: dragItem
         });
-        console.log(message)
         ws.send(message);
     };
 
-    const teste = () => {
-        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "O.S Reagendamento", assignee: "Teste", title: "2020 - João Pedro", description: "Teste", created_by: "Teste", lineAddress: "Teste", province: "Teste", city: "Teste", team: "Teste" } });
+    const createTasks = () => {
+        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", assignee: "Felippe Gonçalves", title: "70524 - Sem Conexão ", description: "", created_by: "26/08/2024", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
         ws.send(message);
     }
 
+    console.log(boardData)
     return (
-        <div className="flex w-screen h-screen">
+        <div className="flex w-screen h-screen overflow-hidden">
             <SideBar setOpenSideBar={setOpenSideBar} openSideBar={openSideBar} />
-            <div className='flex-1 overflow-auto bg-fundo-suporte bg-center bg-cover bg-no-repeat h-full scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-black'>
-                <div className={`flex flex-col mx-6`}>
+            <div className='flex-1 bg-fundo-suporte bg-center bg-cover bg-no-repeat h-full overflow-hidden'>
+
+                <div className={`flex flex-col ml-6 h-full relative`}>
                     <div className='w-full flex flex-col justify-center items-center mt-10 gap-y-4'>
                         <h1 className='text-white text-7xl'>TASKS DEMANDAS</h1>
                         <span className='text-slate-500 text-3xl'>SUPORTE TÉCNICO</span>
                     </div>
 
-                    <div class="h-[240px] w-full mt-6">
-                        <div class="grid h-full w-full grid-cols-2 grid-rows-2 gap-2 lg:grid-cols-4">
-                            <div class="col-span-2 row-span-2 lg:col-start-4 lg:col-end-4">
+                    <div className="h-[240px] w-full my-2">
+                        <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-2 lg:grid-cols-4">
+                            <div className="col-span-2 row-span-2 lg:col-start-4 lg:col-end-4">
                                 <div className='flex flex-col w-96 h-32 bg-[#111111] rounded-sm px-4 py-2'>
                                     <span className='text-white text-2xl font-bold'>Status</span>
                                     <p className='text-slate-500 text-xs'>O que cada cor significa:</p>
@@ -85,10 +88,10 @@ export const SuporteTecnico = () => {
                                         <span className='bg-[#FFDD63] font-bold text-md text-center rounded-xl min-w-28 py-0.5 px-4'>Pendente</span>
                                         <span className='bg-[#FF5F49] font-bold text-md text-center rounded-xl min-w-28 py-0.5 px-4'>Atrasado</span>
                                     </div>
-                                    <button onClick={teste}>Criar</button>
+                                    <button onClick={createTasks}>Criar</button>
                                 </div>
                             </div>
-                            <div class="col-start-1 col-end-1 row-start-2 row-end-2">
+                            <div className="col-start-1 col-end-1 row-start-2 row-end-2">
                                 <div className='flex bg-[#111111] w-52 rounded-sm p-3'>
                                     <span onClick={() => alert("oi")}
                                         className='text-white text-start flex items-center cursor-pointer font-bold gap-x-28'>
@@ -97,7 +100,7 @@ export const SuporteTecnico = () => {
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-start-2 col-end-4 row-start-2 row-end-2">
+                            <div className="col-start-2 col-end-4 row-start-2 row-end-2">
                                 <div className="relative w-[650px]">
                                     <input
                                         className="w-full p-3 pr-10 rounded-sm bg-[#111111] text-white placeholder-gray-400 focus:outline-none"
@@ -113,7 +116,7 @@ export const SuporteTecnico = () => {
                     </div>
 
                     <DragDropContext onDragEnd={onDragEnd}>
-                        <div className={`flex w-full flex-1 space-x-5 max-h-[calc(100vh-25rem)] mt-6 `}>
+                        <div className="flex w-full space-x-5 mt-6 overflow-x-auto overflow-y-hidden scrollbar-thin h-full">
                             {boardData.map((data, index) => {
                                 data.items = dataTeste.filter(element => element.status === data.name);
 
@@ -127,8 +130,8 @@ export const SuporteTecnico = () => {
                             })}
                         </div>
                     </DragDropContext>
+                    <button onClick={() => alert("Modal")} class="absolute bottom-5 right-1 h-16 w-16 rounded-full bg-black-dark"><AddIcon className='text-white' /></button>
                 </div>
-
             </div>
         </div>
 

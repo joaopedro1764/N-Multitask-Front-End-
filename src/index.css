@@ -15,7 +15,7 @@
 
 @layer utilities {
     .scrollbar-thin::-webkit-scrollbar {
-        height: 10px;
+        height: 8px;
         /* Altura do scrollbar horizontal */
         width: 5px;
         /* Largura do scrollbar vertical */
@@ -30,7 +30,7 @@
 
     .scrollbar-thin::-webkit-scrollbar-track {
         background: white;
-        /* Fundo do track */
+       border-radius: 5px;
     }
 
 }

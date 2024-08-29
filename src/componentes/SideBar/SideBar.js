@@ -20,7 +20,7 @@ export const SideBar = ({openSideBar, setOpenSideBar}) => {
     ];
 
     return (
-        <div className={`h-screen bg-black-dark  rounded-r-md border-r-white border-r-[6px] ${openSideBar ? 'min-w-72' : 'min-w-28'}`}>
+        <div className={`h-screen bg-black-dark  rounded-r-md border-r-white border-r-[6px] ${openSideBar ? 'min-w-56' : 'min-w-16'}`}>
             <KeyboardDoubleArrowLeftIcon
                 onClick={() => setOpenSideBar(!openSideBar)}
                 className={`!w-10 !h-10 text-white cursor-pointer !mt-4 !float-right ${!openSideBar && 'rotate-180'}`}
