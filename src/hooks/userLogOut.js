@@ -1,22 +1,20 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 import { showToast } from '../componentes/Notification/Notification';
 
 const userAuth = (Cookies.get("userAuth"));
-console.log(userAuth)
 
 const logoutUser = async () => {
-    return await axios.post("https://nmt.nmultifibra.com.br/notion/DeauthenticateUser", null, {
+    return await axios.get("http://10.0.30.221:5228/DeauthenticateUser", {
         headers: {
-            'userAuth': userAuth
+            'userauth': userAuth
         }
     });
 }
 
 export const useLogout = () => {
-    const navigate = useNavigate();
+
     const mutate = useMutation({
         mutationFn: logoutUser,
         onSuccess: () => {

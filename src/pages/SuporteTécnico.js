@@ -6,22 +6,22 @@ import { useEffect, useState } from 'react';
 import Data from '../utils/data.json'
 import { DragDropContext } from 'react-beautiful-dnd';
 import { ColumnCard } from '../componentes/kanban/ColumnCard/ColumnCard';
+import Cookies from 'js-cookie';
 
 export const SuporteTecnico = () => {
 
     const [openSideBar, setOpenSideBar] = useState(true)
-
-    const [boardData, setBoardData] = useState(Data);
+    const [boardData] = useState(Data);
     const [ws, setWs] = useState();
     const [dataTeste, setDataTeste] = useState([]);
+    const userCookie = JSON.parse(Cookies.get('userAuth'));
 
-    const [open, setOpen] = useState(false);
+
+    console.log(dataTeste)
+
     useEffect(() => {
         const socket = new WebSocket('wss://nmt.nmultifibra.com.br/notion/ws');
         setWs(socket);
-        socket.onopen = function () {
-            console.log('Conexão estabelecida.');
-        };
         socket.onmessage = function (event) {
             const data = JSON.parse(event.data)
             if (data.type === "update_board") {
@@ -35,7 +35,6 @@ export const SuporteTecnico = () => {
 
         const destinationDroppableId = parseInt(re.destination.droppableId);
         const sourceDroppableId = parseInt(re.source.droppableId);
-
 
         const columnNoCompleted = boardData.length - 1;
         const columnCompleted = boardData.length - 2;
@@ -51,7 +50,7 @@ export const SuporteTecnico = () => {
         } else {
             return;
         }
-        console.log(dragItem)
+
         const message = JSON.stringify({
             type: 'custom_action',
             action: 'updateCard',
@@ -61,11 +60,10 @@ export const SuporteTecnico = () => {
     };
 
     const createTasks = () => {
-        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", assignee: "Felippe Gonçalves", title: "70524 - Sem Conexão ", description: "", created_by: "26/08/2024", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
+        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", assignee: "Felippe Gonçalves", title: "70524 - Sem Conexão ", description: "", created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
         ws.send(message);
     }
 
-    console.log(boardData)
     return (
         <div className="flex w-screen h-screen overflow-hidden">
             <SideBar setOpenSideBar={setOpenSideBar} openSideBar={openSideBar} />
@@ -116,7 +114,7 @@ export const SuporteTecnico = () => {
                     </div>
 
                     <DragDropContext onDragEnd={onDragEnd}>
-                        <div className="flex w-full space-x-5 mt-6 overflow-x-auto overflow-y-hidden scrollbar-thin h-full">
+                        <div className="flex w-full space-x-5 mt-6 overflow-x-auto overflow-y-hidden h-full scrollbar-thin scrollbar-thumb-rounded scrollbar-track-slate-300">
                             {boardData.map((data, index) => {
                                 data.items = dataTeste.filter(element => element.status === data.name);
 

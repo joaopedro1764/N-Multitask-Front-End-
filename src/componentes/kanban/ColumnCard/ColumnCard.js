@@ -27,10 +27,12 @@ export const ColumnCard = ({ task, index }) => {
         'Concluidos': 'bg-[#22640A]',
     };
 
-    const getColumnColor = (task) => columnColors[task.name] || '';
+
+
+    const getColumnColor = (task) => columnColors[task.name];
     const columnColor = getColumnColor(task)
 
-    const getTitleColor = (task) => titleColors[task.name] || '';
+    const getTitleColor = (task) => titleColors[task.name];
     const colorTitle = getTitleColor(task)
 
     return (
@@ -40,10 +42,13 @@ export const ColumnCard = ({ task, index }) => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                 >
-                    <div className={`overflow-y-auto p-2 rounded-md ${columnColor} min-w-[300px] max-h-[calc(100%-20px)]`}>
-                        <div className={`w-full flex gap-4 items-center text-white px-2 py-1.5 sticky top-0 z-10 ${colorTitle}`}>
-                            <span className="w-2 h-2 bg-white rounded-full" />
-                            <span className="text-balance">{task.name}</span>
+                    <div className={`overflow-y-auto p-2 rounded-md ${columnColor} min-w-[300px] max-h-[calc(100%-20px)] scrollbar-thin scrollbar-w-[10px] scrollbar-thumb-rounded-xl scrollbar-thumb-slate-300 scrollbar- scrollbar-track-slate-300`}>
+
+                        <div className={`w-full flex justify-between gap-4 items-center text-white px-2 py-1.5 sticky top-0 ${colorTitle}`}>
+                            <div className="flex items-center gap-3">
+                                <span className="w-2 h-2 bg-white rounded-full" />
+                                <span className="text-balance">{task.name}</span>
+                            </div>
                             <span className="font-bold text-[#9DA7C2]">{task.items?.length}</span>
                         </div>
                         {task.items.length > 0 &&

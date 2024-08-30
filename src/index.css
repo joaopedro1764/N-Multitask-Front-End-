@@ -30,7 +30,7 @@
 
     .scrollbar-thin::-webkit-scrollbar-track {
         background: white;
-       border-radius: 5px;
+        border-radius: 5px;
     }
 
 }

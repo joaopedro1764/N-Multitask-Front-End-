@@ -1,20 +1,19 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Cookies from 'js-cookie';
-import { useNavigate } from "react-router-dom";
 import { showToast } from "../componentes/Notification/Notification";
 
 const loginUser = async (data) => {
-    return await axios.post("https://nmt.nmultifibra.com.br/notion/AuthenticateUser", data);
+    return await axios.post("http://10.0.30.221:5228/AuthenticateUser", data);
 }
 
 
 export const useLogin = () => {
-    const navigate = useNavigate();
+
     const mutate = useMutation({
         mutationFn: loginUser,
         onSuccess: (data) => {
-            Cookies.set("userAuth", data.data)
+            Cookies.set("userAuth", JSON.stringify(data.data))
             window.location.href = "/suporteTecnico"
         },
         onError: (error) => {
