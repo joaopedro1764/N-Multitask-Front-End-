@@ -2,10 +2,11 @@ import { Draggable } from 'react-beautiful-dnd';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
 import moment from 'moment';
+import { SLA } from '../../SLA/SLA';
 export const CardItem = ({ task, index, taskItem }) => {
 
 
-
+    console.log(task)
     const cardsColors = {
         'Casos Suporte': 'bg-[#3C4F85]',
         'Atualização PPPOE': 'bg-[#626672]',
@@ -16,11 +17,15 @@ export const CardItem = ({ task, index, taskItem }) => {
         'Não solucionado': 'bg-red-500',
         'Concluidos': 'bg-[#203A16]',
     };
-
     const statusColors = {
         'A fazer': 'bg-[#83FF57]',
         'Pendente': 'bg-[#FFDD63]',
         'Atrasado': 'bg-[#FF5F49]'
+    }
+    const bordersColors = {
+        'A fazer': 'border-l-[#83FF57]',
+        'Atrasado': 'border-l-[#FF5F49]',
+        'Pendente': 'border-l-[#FFDD63]'
     }
 
     const isToday = (date) => {
@@ -50,10 +55,9 @@ export const CardItem = ({ task, index, taskItem }) => {
     };
 
     const colorStatus = validateStatusColor(moment(taskItem.created_time).format("DD/MM/YYYY"))
-
+    const borderColor = validateStatusColor(moment(taskItem.created_time).format("DD/MM/YYYY"))
+    const border = bordersColors[borderColor]
     const color = statusColors[colorStatus]
-
-
     const getCardColor = (task) => cardsColors[task.name] || '';
     const cardColor = getCardColor(task)
 
@@ -66,10 +70,10 @@ export const CardItem = ({ task, index, taskItem }) => {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className={`${cardColor} flex flex-col items-start rounded-md mt-6 shadow-2xl h-auto p-2 border-l-8 border-l-${color}`}
+                    className={`${cardColor} flex flex-col items-start rounded-md mt-6 shadow-2xl h-auto p-2 border-l-8 ${border}`}
                 >
                     <div className='w-full flex justify-between'>
-                        <span className={`${color} px-2 py-1 rounded-md mt-1 text-xs text-[#354165] font-medium`}>😐 50%</span>
+                      <SLA color={color} taskItem={taskItem}/>
                         <span className={`${color} px-2 py-1 text-xs rounded-md text-[#354165] font-medium flex gap-2 items-center`}>{moment(taskItem.created_time).format("DD/MM/YYYY")}<CalendarMonthIcon fontSize='small' /></span>
                     </div>
                     <div className='w-full flex flex-col items-start gap-2 mt-2'>

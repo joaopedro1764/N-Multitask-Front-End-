@@ -42,7 +42,7 @@ export const ColumnCard = ({ task, index }) => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                 >
-                    <div className={`overflow-y-auto p-2 rounded-md ${columnColor} min-w-[300px] max-h-[calc(100%-20px)] scrollbar-thin scrollbar-w-[10px] scrollbar-thumb-rounded-xl scrollbar-thumb-slate-300 scrollbar- scrollbar-track-slate-300`}>
+                    <div className={`overflow-y-auto p-2 rounded-md ${columnColor} min-w-[300px] max-h-[calc(100%-20px)] scrollbar-column`}>
 
                         <div className={`w-full flex justify-between gap-4 items-center text-white px-2 py-1.5 sticky top-0 ${colorTitle}`}>
                             <div className="flex items-center gap-3">

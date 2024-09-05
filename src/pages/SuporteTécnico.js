@@ -14,10 +14,7 @@ export const SuporteTecnico = () => {
     const [boardData] = useState(Data);
     const [ws, setWs] = useState();
     const [dataTeste, setDataTeste] = useState([]);
-    const userCookie = JSON.parse(Cookies.get('userAuth'));
-
-
-    console.log(dataTeste)
+    //const userCookie = JSON.parse(Cookies.get('userAuth'));
 
     useEffect(() => {
         const socket = new WebSocket('wss://nmt.nmultifibra.com.br/notion/ws');
@@ -35,12 +32,17 @@ export const SuporteTecnico = () => {
 
         const destinationDroppableId = parseInt(re.destination.droppableId);
         const sourceDroppableId = parseInt(re.source.droppableId);
-
         const columnNoCompleted = boardData.length - 1;
         const columnCompleted = boardData.length - 2;
+        
         let newBoardData = [...boardData];
         var dragItem = newBoardData[sourceDroppableId].items[re.source.index];
 
+        if (destinationDroppableId === columnCompleted && sourceDroppableId === columnNoCompleted) {
+            return;
+        } else if (destinationDroppableId === columnNoCompleted && sourceDroppableId === columnCompleted) {
+            return;
+        }
 
         if (destinationDroppableId === columnCompleted) {
             dragItem.status = "Concluidos"
@@ -60,7 +62,7 @@ export const SuporteTecnico = () => {
     };
 
     const createTasks = () => {
-        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", assignee: "Felippe Gonçalves", title: "70524 - Sem Conexão ", description: "", created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
+        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "O.S Escallo", assignee: "Felippe Gonçalves", title: "70524 - Sem Conexão ", description: "", created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
         ws.send(message);
     }
 
@@ -86,7 +88,7 @@ export const SuporteTecnico = () => {
                                         <span className='bg-[#FFDD63] font-bold text-md text-center rounded-xl min-w-28 py-0.5 px-4'>Pendente</span>
                                         <span className='bg-[#FF5F49] font-bold text-md text-center rounded-xl min-w-28 py-0.5 px-4'>Atrasado</span>
                                     </div>
-                                    <button onClick={createTasks}>Criar</button>
+                                    <button className='text-white uppercase' onClick={createTasks}>Criar</button>
                                 </div>
                             </div>
                             <div className="col-start-1 col-end-1 row-start-2 row-end-2">
@@ -114,7 +116,7 @@ export const SuporteTecnico = () => {
                     </div>
 
                     <DragDropContext onDragEnd={onDragEnd}>
-                        <div className="flex w-full space-x-5 mt-6 overflow-x-auto overflow-y-hidden h-full scrollbar-thin scrollbar-thumb-rounded scrollbar-track-slate-300">
+                        <div className="flex w-full space-x-5 mt-6 overflow-x-auto overflow-y-hidden h-full scrollbar-kanban">
                             {boardData.map((data, index) => {
                                 data.items = dataTeste.filter(element => element.status === data.name);
 

@@ -14,23 +14,30 @@
 
 
 @layer utilities {
-    .scrollbar-thin::-webkit-scrollbar {
-        height: 8px;
-        /* Altura do scrollbar horizontal */
+    .scrollbar-kanban::-webkit-scrollbar {
+        height: 12px;
         width: 5px;
-        /* Largura do scrollbar vertical */
     }
 
-    .scrollbar-thin::-webkit-scrollbar-thumb {
+    .scrollbar-kanban::-webkit-scrollbar-thumb {
         background-color: #000000;
-        /* Cor do thumb */
         border-radius: 6px;
-        /* Bordas arredondadas */
     }
 
-    .scrollbar-thin::-webkit-scrollbar-track {
-        background: white;
+    .scrollbar-kanban::-webkit-scrollbar-track {
+        background: #ffff;
         border-radius: 5px;
     }
 
+    .scrollbar-column::-webkit-scrollbar {
+        height: 12px;
+        width: 10px;
+    }
+
+    .scrollbar-column::-webkit-scrollbar-thumb {
+        border-radius: 2px;
+        background-color: #adb5bd;
+    }
+
+   
 }
