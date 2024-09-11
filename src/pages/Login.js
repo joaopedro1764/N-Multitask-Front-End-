@@ -26,7 +26,7 @@ export const Login = () => {
     return (
 
         <div className="w-full h-screen bg-fundo-login bg-center bg-no-repeat bg-cover overflow-hidden">
-            <div className="flex w-full h-full my-40 justify-center">
+            <div className="flex w-full h-full justify-center items-center">
                 <div className="hidden lg:w-[60%] lg:flex flex-col items-center mt-10">
                     <span className="text-white text-4xl text-start font-kodchasan-bold w-[450px]">Um sistema completo e dinâmico para demandas cotidianas.</span>
                     <img width={"52%"} alt="Imagem " src={require("../assets/iconLogin.png")} />

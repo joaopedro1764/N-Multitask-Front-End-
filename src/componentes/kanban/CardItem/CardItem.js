@@ -5,9 +5,7 @@ import moment from 'moment';
 import { SLA } from '../../SLA/SLA';
 export const CardItem = ({ task, index, taskItem }) => {
 
-
-    console.log(task)
-    const cardsColors = {
+    const CARD_COLORS = {
         'Casos Suporte': 'bg-[#3C4F85]',
         'Atualização PPPOE': 'bg-[#626672]',
         'O.S Aprimorar': 'bg-[#6A5943]',
@@ -17,12 +15,12 @@ export const CardItem = ({ task, index, taskItem }) => {
         'Não solucionado': 'bg-red-500',
         'Concluidos': 'bg-[#203A16]',
     };
-    const statusColors = {
+    const STATUS_COLORS = {
         'A fazer': 'bg-[#83FF57]',
         'Pendente': 'bg-[#FFDD63]',
         'Atrasado': 'bg-[#FF5F49]'
     }
-    const bordersColors = {
+    const BORDERS_COLORS = {
         'A fazer': 'border-l-[#83FF57]',
         'Atrasado': 'border-l-[#FF5F49]',
         'Pendente': 'border-l-[#FFDD63]'
@@ -54,11 +52,18 @@ export const CardItem = ({ task, index, taskItem }) => {
         }
     };
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            // Enviar a mensagem
+            alert("voce digitou" + event.data)
+        }
+    };
+
     const colorStatus = validateStatusColor(moment(taskItem.created_time).format("DD/MM/YYYY"))
     const borderColor = validateStatusColor(moment(taskItem.created_time).format("DD/MM/YYYY"))
-    const border = bordersColors[borderColor]
-    const color = statusColors[colorStatus]
-    const getCardColor = (task) => cardsColors[task.name] || '';
+    const border = BORDERS_COLORS[borderColor]
+    const color = STATUS_COLORS[colorStatus]
+    const getCardColor = (task) => CARD_COLORS [task.name] || '';
     const cardColor = getCardColor(task)
 
 
@@ -73,7 +78,7 @@ export const CardItem = ({ task, index, taskItem }) => {
                     className={`${cardColor} flex flex-col items-start rounded-md mt-6 shadow-2xl h-auto p-2 border-l-8 ${border}`}
                 >
                     <div className='w-full flex justify-between'>
-                      <SLA color={color} taskItem={taskItem}/>
+                        <SLA color={color} taskItem={taskItem} />
                         <span className={`${color} px-2 py-1 text-xs rounded-md text-[#354165] font-medium flex gap-2 items-center`}>{moment(taskItem.created_time).format("DD/MM/YYYY")}<CalendarMonthIcon fontSize='small' /></span>
                     </div>
                     <div className='w-full flex flex-col items-start gap-2 mt-2'>
@@ -86,7 +91,7 @@ export const CardItem = ({ task, index, taskItem }) => {
                             <p className='text-slate-500'>1</p> <QuestionAnswerRoundedIcon className='text-white' />
                         </div>
                         <div className='mt-2 w-full rounded-lg'>
-                            <input className='w-full px-4 py-3 focus:outline-none rounded-md placeholder:text-gray-500 placeholder:font-bold' placeholder='Comentário'></input>
+                            <input onKeyDown={handleKeyDown} className='w-full px-4 py-3 focus:outline-none rounded-md placeholder:text-gray-500 placeholder:font-bold' placeholder='Comentário'></input>
                         </div>
                     </div>
                 </div>

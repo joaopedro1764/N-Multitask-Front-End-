@@ -6,26 +6,26 @@ import { useEffect, useState } from 'react';
 import Data from '../utils/data.json'
 import { DragDropContext } from 'react-beautiful-dnd';
 import { ColumnCard } from '../componentes/kanban/ColumnCard/ColumnCard';
-import Cookies from 'js-cookie';
+import { useWebSocket } from '../hooks/useWebSocket';
+import { useWebSocketPingPong } from '../hooks/useWebSocketPingPong';
 
 export const SuporteTecnico = () => {
-
+    
+    const { isConnected, message, sendMessage } = useWebSocket('wss://nmt.nmultifibra.com.br/notion/ws')
+    useWebSocketPingPong(sendMessage);
     const [openSideBar, setOpenSideBar] = useState(true)
     const [boardData] = useState(Data);
-    const [ws, setWs] = useState();
     const [dataTeste, setDataTeste] = useState([]);
-    //const userCookie = JSON.parse(Cookies.get('userAuth'));
 
     useEffect(() => {
-        const socket = new WebSocket('wss://nmt.nmultifibra.com.br/notion/ws');
-        setWs(socket);
-        socket.onmessage = function (event) {
-            const data = JSON.parse(event.data)
+        if (isConnected && message) {
+            const data = JSON.parse(message);
             if (data.type === "update_board") {
-                setDataTeste(data.data?.cards)
+                setDataTeste(data.data.cards);
             }
-        };
-    }, []);
+        }
+    }, [isConnected, message]);
+
 
     const onDragEnd = (re) => {
         if (!re.destination) return;
@@ -34,7 +34,7 @@ export const SuporteTecnico = () => {
         const sourceDroppableId = parseInt(re.source.droppableId);
         const columnNoCompleted = boardData.length - 1;
         const columnCompleted = boardData.length - 2;
-        
+
         let newBoardData = [...boardData];
         var dragItem = newBoardData[sourceDroppableId].items[re.source.index];
 
@@ -58,12 +58,12 @@ export const SuporteTecnico = () => {
             action: 'updateCard',
             input: dragItem
         });
-        ws.send(message);
+        sendMessage(message);
     };
 
     const createTasks = () => {
-        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "O.S Escallo", assignee: "Felippe Gonçalves", title: "70524 - Sem Conexão ", description: "", created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
-        ws.send(message);
+        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", assignee: "Felippe Gonçalves", title: "70524 - Sem Conexão ", description: "aaaaa", created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
+        sendMessage(message);
     }
 
     return (
@@ -71,7 +71,7 @@ export const SuporteTecnico = () => {
             <SideBar setOpenSideBar={setOpenSideBar} openSideBar={openSideBar} />
             <div className='flex-1 bg-fundo-suporte bg-center bg-cover bg-no-repeat h-full overflow-hidden'>
 
-                <div className={`flex flex-col ml-6 h-full relative`}>
+                <div className={`flex flex-col ml-6 mr-1 h-full relative`}>
                     <div className='w-full flex flex-col justify-center items-center mt-10 gap-y-4'>
                         <h1 className='text-white text-7xl'>TASKS DEMANDAS</h1>
                         <span className='text-slate-500 text-3xl'>SUPORTE TÉCNICO</span>
@@ -114,7 +114,6 @@ export const SuporteTecnico = () => {
                             </div>
                         </div>
                     </div>
-
                     <DragDropContext onDragEnd={onDragEnd}>
                         <div className="flex w-full space-x-5 mt-6 overflow-x-auto overflow-y-hidden h-full scrollbar-kanban">
                             {boardData.map((data, index) => {

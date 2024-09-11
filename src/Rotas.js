@@ -7,8 +7,6 @@ import { Grafic } from "./pages/grafic";
 export const Rotas = () => {
 
   const userAuth = Cookies.get("userAuth");
-
-
   const RoutePrivate = ({ children }) => {
     return userAuth !== undefined ? children : <Navigate to="/" />;
   };
@@ -18,8 +16,8 @@ export const Rotas = () => {
       <Route path="/" element={userAuth !== undefined ? <Navigate to="/suporteTecnico" /> : <Login />} />
       <Route path="/suporteTecnico" element={
         //<RoutePrivate>
-        <SuporteTecnico />
-        //</RoutePrivate>
+          <SuporteTecnico />
+       // </RoutePrivate>
       } />
       <Route path="/grafic" element={
         <Grafic />
