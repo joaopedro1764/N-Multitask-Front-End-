@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 export const ColumnCard = ({ task, index }) => {
 
-    const columnColors = {
+    const COLUMNS_COLORS = {
         'Casos Suporte': 'bg-[#30384F]',
         'Atualização PPPOE': 'bg-[#42454F]',
         'O.S Aprimorar': 'bg-[#362F26]',
@@ -15,8 +15,7 @@ export const ColumnCard = ({ task, index }) => {
         'Concluidos': 'bg-[#173A22]',
     };
 
-
-    const titleColors = {
+    const TITLE_COLORS = {
         'Casos Suporte': 'bg-[#3C4F85]',
         'Atualização PPPOE': 'bg-[#626672]',
         'O.S Aprimorar': 'bg-[#6A5943]',
@@ -27,12 +26,9 @@ export const ColumnCard = ({ task, index }) => {
         'Concluidos': 'bg-[#22640A]',
     };
 
-
-
-    const getColumnColor = (task) => columnColors[task.name];
+    const getColumnColor = (task) => COLUMNS_COLORS[task.name];
     const columnColor = getColumnColor(task)
-
-    const getTitleColor = (task) => titleColors[task.name];
+    const getTitleColor = (task) => TITLE_COLORS[task.name];
     const colorTitle = getTitleColor(task)
 
     return (
@@ -42,8 +38,7 @@ export const ColumnCard = ({ task, index }) => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                 >
-                    <div className={`overflow-y-auto p-2 rounded-md ${columnColor} min-w-[300px] max-h-[calc(100%-20px)] scrollbar-column`}>
-
+                    <div className={`overflow-y-auto p-2 rounded-md ${columnColor} min-w-[300px] max-h-[calc(100%-20px)] scrollbar-column z-10`}>
                         <div className={`w-full flex justify-between gap-4 items-center text-white px-2 py-1.5 sticky top-0 ${colorTitle}`}>
                             <div className="flex items-center gap-3">
                                 <span className="w-2 h-2 bg-white rounded-full" />
@@ -59,7 +54,6 @@ export const ColumnCard = ({ task, index }) => {
                                     taskItem={taskItem}
                                     index={taskID}
                                 />
-
                             ))}
                         {provided.placeholder}
                         <button onClick={() => alert("Olá")} className={`${colorTitle} mt-2 px-3 py-1 rounded-md text-sm font-medium text-white flex gap-1 items-center`}><AddIcon />Novo Card</button>

@@ -1,9 +1,26 @@
 import { Draggable } from 'react-beautiful-dnd';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
+import Tooltip from '@mui/material/Tooltip';
 import moment from 'moment';
 import { SLA } from '../../SLA/SLA';
+import { useState } from 'react';
+import { useWebSocketContext } from '../../../hooks/useWebSocketProvider';
+import Cookies from 'js-cookie';
+import { showToast } from '../../Notification/Notification';
 export const CardItem = ({ task, index, taskItem }) => {
+
+    const userCookieString = Cookies.get('userAuth');
+    const { sendMessage } = useWebSocketContext()
+    const [value, setValue] = useState("")
+    let comment = JSON.parse(taskItem.description);
+    let dateNow = moment().format("DD/MM/YYYY HH:mm")
+    let nameUser;
+
+    if (userCookieString) {
+        let userCookie = JSON.parse(userCookieString);
+        nameUser = userCookie.name;
+    }
 
     const CARD_COLORS = {
         'Casos Suporte': 'bg-[#3C4F85]',
@@ -53,49 +70,71 @@ export const CardItem = ({ task, index, taskItem }) => {
     };
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            // Enviar a mensagem
-            alert("voce digitou" + event.data)
+
+        if (value !== "" && event.key === 'Enter') {
+            let jsonComment = {
+                user: nameUser, date: dateNow, comment: value
+            }
+            comment.push(jsonComment)
+            taskItem.description = JSON.stringify(comment)
+            const message = JSON.stringify({
+                type: 'custom_action',
+                action: 'updateCard',
+                input: taskItem
+            });
+            sendMessage(message)
+            setValue("")
+        } else {
+            showToast('Digite um comentário válido', "error")
         }
-    };
+    }
 
     const colorStatus = validateStatusColor(moment(taskItem.created_time).format("DD/MM/YYYY"))
     const borderColor = validateStatusColor(moment(taskItem.created_time).format("DD/MM/YYYY"))
     const border = BORDERS_COLORS[borderColor]
     const color = STATUS_COLORS[colorStatus]
-    const getCardColor = (task) => CARD_COLORS [task.name] || '';
+    const getCardColor = (task) => CARD_COLORS[task.name] || '';
     const cardColor = getCardColor(task)
-
+    const [isHovered, setIsHovered] = useState(false);
 
 
     return (
-        <Draggable key={taskItem.id} index={index} draggableId={taskItem.id.toString()}>
-            {(provided, snapshot) => (
-                <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    className={`${cardColor} flex flex-col items-start rounded-md mt-6 shadow-2xl h-auto p-2 border-l-8 ${border}`}
-                >
-                    <div className='w-full flex justify-between'>
-                        <SLA color={color} taskItem={taskItem} />
-                        <span className={`${color} px-2 py-1 text-xs rounded-md text-[#354165] font-medium flex gap-2 items-center`}>{moment(taskItem.created_time).format("DD/MM/YYYY")}<CalendarMonthIcon fontSize='small' /></span>
-                    </div>
-                    <div className='w-full flex flex-col items-start gap-2 mt-2'>
-                        <span className='text-white text-xl font-medium'>{taskItem.title}</span>
-                        <div className='w-full flex items-center justify-between gap-3'>
-                            <div className='w-full flex gap-3'>
-                                <img src={taskItem.province} className='w-8 h-8 bg-black rounded-full object-cover' />
-                                <span className='text-white text-base'>{taskItem.assignee}</span>
+        <>
+            <Draggable key={taskItem.id} index={index} draggableId={taskItem.id.toString()}>
+                {(provided, snapshot) => (
+                    <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className={`${cardColor} w-full flex flex-col items-start rounded-md mt-6 shadow-2xl h-auto p-2 border-l-8 ${border}`}
+                    >
+                        <div className='w-full flex justify-between'>
+                            <SLA color={color} taskItem={taskItem} />
+                            <span className={`${color} px-2 py-1 text-xs rounded-md text-[#354165] font-medium flex gap-2 items-center`}>{moment(taskItem.created_time).format("DD/MM/YYYY")}<CalendarMonthIcon fontSize='small' /></span>
+                        </div>
+                        <div className='w-full flex flex-col items-start gap-2 mt-2'>
+                            <span className='text-white text-xl font-medium'>{taskItem.title}</span>
+                            <div className='w-full flex items-center justify-between gap-3'>
+                                <div className='w-full flex gap-3'>
+                                    <img src={taskItem.province} className='w-8 h-8 bg-black rounded-full object-cover' />
+                                    <span className='text-white text-base'>{taskItem.assignee}</span>
+                                </div>
+                                <p className='text-slate-500'>{comment.length}</p>
+
+                                <QuestionAnswerRoundedIcon
+                                    onMouseEnter={() => setIsHovered(true)}
+                                    onMouseLeave={() => setIsHovered(false)}
+                                    className='text-white' />
+                               
                             </div>
-                            <p className='text-slate-500'>1</p> <QuestionAnswerRoundedIcon className='text-white' />
-                        </div>
-                        <div className='mt-2 w-full rounded-lg'>
-                            <input onKeyDown={handleKeyDown} className='w-full px-4 py-3 focus:outline-none rounded-md placeholder:text-gray-500 placeholder:font-bold' placeholder='Comentário'></input>
+                            <div className='mt-2 w-full rounded-lg'>
+                                <input value={value} onChange={(event) => { setValue(event.target.value) }} onKeyDown={handleKeyDown} className='w-full px-4 py-3 focus:outline-none rounded-md placeholder:text-gray-500 placeholder:font-bold' placeholder='Comentário'></input>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </Draggable>
+                )}
+            </Draggable>
+
+        </>
     );
 };

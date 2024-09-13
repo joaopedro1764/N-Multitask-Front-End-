@@ -8,10 +8,11 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { ColumnCard } from '../componentes/kanban/ColumnCard/ColumnCard';
 import { useWebSocket } from '../hooks/useWebSocket';
 import { useWebSocketPingPong } from '../hooks/useWebSocketPingPong';
+import { useWebSocketContext } from '../hooks/useWebSocketProvider';
 
 export const SuporteTecnico = () => {
-    
-    const { isConnected, message, sendMessage } = useWebSocket('wss://nmt.nmultifibra.com.br/notion/ws')
+
+    const { isConnected, message, sendMessage } = useWebSocketContext()
     useWebSocketPingPong(sendMessage);
     const [openSideBar, setOpenSideBar] = useState(true)
     const [boardData] = useState(Data);
@@ -62,7 +63,7 @@ export const SuporteTecnico = () => {
     };
 
     const createTasks = () => {
-        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", assignee: "Felippe Gonçalves", title: "70524 - Sem Conexão ", description: "aaaaa", created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
+        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", assignee: "Felippe Gonçalves", title: "70524 - Sem Conexão ", created_time: '', description: JSON.stringify([]), created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
         sendMessage(message);
     }
 
@@ -129,7 +130,7 @@ export const SuporteTecnico = () => {
                             })}
                         </div>
                     </DragDropContext>
-                    <button onClick={() => alert("Modal")} class="absolute bottom-5 right-1 h-16 w-16 rounded-full bg-black-dark"><AddIcon className='text-white' /></button>
+                    <button onClick={() => alert("Modal")} className="absolute bottom-5 right-1 h-16 w-16 rounded-full bg-black-dark"><AddIcon className='text-white' /></button>
                 </div>
             </div>
         </div>
