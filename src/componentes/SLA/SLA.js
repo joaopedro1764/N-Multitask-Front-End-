@@ -1,35 +1,36 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 
 export const SLA = ({ color, taskItem }) => {
-    const calculateSLA = () => {
-        const dateNow = moment();
-        const dateCreate = moment(taskItem.created_time);
-        const diff = dateNow.diff(dateCreate, 'hours');
-        const duration = Math.abs(diff);
-        const slaHours = 12;
-        const porcentagem = duration >= slaHours ? 0 : 100 - (duration / slaHours) * 100;
-        return Math.round(porcentagem);
-    };
-
     const [slaPercentage, setSlaPercentage] = useState(0);
 
+    const calculateSLA = () => {
+        const slaHours = 12;
+        const duration = Math.abs(moment().diff(moment(taskItem.created_time), 'hours'));
+        return Math.round(duration >= slaHours ? 0 : 100 - (duration / slaHours) * 100);
+    };
+
     useEffect(() => {
-        const sla = calculateSLA();
-        setSlaPercentage(sla);
+        const updateSLA = () => {
+            setSlaPercentage(calculateSLA());
+        };
+        updateSLA(); 
+        const intervalId = setInterval(updateSLA, 60000);
+        return () => clearInterval(intervalId);
     }, [taskItem]);
 
+    const getSlaIcon = () => {
+        if (slaPercentage >= 75) return <SentimentVerySatisfiedIcon fontSize="small" />;
+        if (slaPercentage >= 20) return <SentimentDissatisfiedIcon fontSize="small" />;
+        return <SentimentVeryDissatisfiedIcon fontSize="small" />;
+    };
 
     return (
-        <span className={`${color} px-2 py-1 rounded-md mt-1 text-xs text-[#354165] font-medium`}>
-            {
-                slaPercentage >= 75
-                    ? '😁 ' + slaPercentage + "%"
-                    : slaPercentage >= 20
-                        ? '😐 ' + slaPercentage + "%"
-                        : '😠 ' + slaPercentage + "%"
-            }
-
+        <span className={`${color} px-2 py-1 rounded-md mt-1 text-sm text-[#354165] font-bold flex items-center gap-1`}>
+            {getSlaIcon()} {slaPercentage + "%"}
         </span>
-    )
-}
+    );
+};

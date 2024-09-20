@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 
-export const useWebSocketPingPong = (sendMessage, pingInterval = 60000) => {
+export const useWebSocketPingPong = (sendMessage, pingInterval = 6000) => {
+
     const pingTimeoutRef = useRef(null);
 
     const sendPing = useCallback(() => {
@@ -10,7 +11,9 @@ export const useWebSocketPingPong = (sendMessage, pingInterval = 60000) => {
             pingTimeoutRef.current = setTimeout(sendPing, pingInterval);
         }
     }, [sendMessage, pingInterval]);
+
     useEffect(() => {
+        sendPing();
         return () => {
             if (pingTimeoutRef.current) {
                 clearTimeout(pingTimeoutRef.current);

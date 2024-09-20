@@ -6,15 +6,14 @@ import { useEffect, useState } from 'react';
 import Data from '../utils/data.json'
 import { DragDropContext } from 'react-beautiful-dnd';
 import { ColumnCard } from '../componentes/kanban/ColumnCard/ColumnCard';
-import { useWebSocket } from '../hooks/useWebSocket';
-import { useWebSocketPingPong } from '../hooks/useWebSocketPingPong';
 import { useWebSocketContext } from '../hooks/useWebSocketProvider';
+import { useWebSocketPingPong } from '../hooks/useWebSocketPingPong';
 
 export const SuporteTecnico = () => {
 
-    const { isConnected, message, sendMessage } = useWebSocketContext()
-    useWebSocketPingPong(sendMessage);
-    const [openSideBar, setOpenSideBar] = useState(true)
+    const { isConnected, message, sendMessage } = useWebSocketContext();
+    useWebSocketPingPong(sendMessage)
+    const [openSideBar, setOpenSideBar] = useState(true);
     const [boardData] = useState(Data);
     const [dataTeste, setDataTeste] = useState([]);
 
@@ -29,8 +28,8 @@ export const SuporteTecnico = () => {
 
 
     const onDragEnd = (re) => {
-        if (!re.destination) return;
 
+        if (!re.destination) return;
         const destinationDroppableId = parseInt(re.destination.droppableId);
         const sourceDroppableId = parseInt(re.source.droppableId);
         const columnNoCompleted = boardData.length - 1;
@@ -63,9 +62,10 @@ export const SuporteTecnico = () => {
     };
 
     const createTasks = () => {
-        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", assignee: "Felippe Gonçalves", title: "70524 - Sem Conexão ", created_time: '', description: JSON.stringify([]), created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
+        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", assignee: "Felippe Gonçalves", title: "70524 - Atualizar Login PPPoE ", created_time: '', description: JSON.stringify([]), created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
         sendMessage(message);
     }
+
 
     return (
         <div className="flex w-screen h-screen overflow-hidden">
@@ -89,7 +89,6 @@ export const SuporteTecnico = () => {
                                         <span className='bg-[#FFDD63] font-bold text-md text-center rounded-xl min-w-28 py-0.5 px-4'>Pendente</span>
                                         <span className='bg-[#FF5F49] font-bold text-md text-center rounded-xl min-w-28 py-0.5 px-4'>Atrasado</span>
                                     </div>
-                                    <button className='text-white uppercase' onClick={createTasks}>Criar</button>
                                 </div>
                             </div>
                             <div className="col-start-1 col-end-1 row-start-2 row-end-2">
@@ -102,13 +101,13 @@ export const SuporteTecnico = () => {
                                 </div>
                             </div>
                             <div className="col-start-2 col-end-4 row-start-2 row-end-2">
-                                <div className="relative w-[650px]">
+                                <div className="relative flex items-center w-[650px] -ml-32 ">
                                     <input
-                                        className="w-full p-3 pr-10 rounded-sm bg-[#111111] text-white placeholder-gray-400 focus:outline-none"
+                                        className="w-full p-3 pr-10 rounded-sm bg-[#111111] text-white placeholder-gray-400 focus:outline-none "
                                         type="text"
                                         placeholder="Digite o que você está procurando..."
                                     />
-                                    <div className="absolute inset-y-0 right-0 top-2 pr-3 flex items-center pointer-events-none">
+                                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                         <PageviewIcon className="text-white !w-10 !h-10 " />
                                     </div>
                                 </div>
@@ -130,7 +129,7 @@ export const SuporteTecnico = () => {
                             })}
                         </div>
                     </DragDropContext>
-                    <button onClick={() => alert("Modal")} className="absolute bottom-5 right-1 h-16 w-16 rounded-full bg-black-dark"><AddIcon className='text-white' /></button>
+                    <button onClick={createTasks} className="absolute bottom-8 right-1 h-16 w-16 rounded-full bg-black-dark"><AddIcon className='text-white' /></button>
                 </div>
             </div>
         </div>

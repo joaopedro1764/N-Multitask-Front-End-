@@ -35,8 +35,8 @@
     }
 
     .scrollbar-column::-webkit-scrollbar-thumb {
-        border-radius: 2px;
-        background-color: #adb5bd;
+        border-radius: 5px;
+        background-color: #c4cad0 ;
     }
 
    

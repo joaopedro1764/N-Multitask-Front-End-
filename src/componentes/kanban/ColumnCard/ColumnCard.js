@@ -6,7 +6,7 @@ export const ColumnCard = ({ task, index }) => {
 
     const COLUMNS_COLORS = {
         'Casos Suporte': 'bg-[#30384F]',
-        'Atualização PPPOE': 'bg-[#42454F]',
+        'Atualização PPPoE': 'bg-[#42454F]',
         'O.S Aprimorar': 'bg-[#362F26]',
         'O.S Global': 'bg-[#2E2319]',
         'O.S Reagendamento': 'bg-[#221628]',
@@ -17,7 +17,7 @@ export const ColumnCard = ({ task, index }) => {
 
     const TITLE_COLORS = {
         'Casos Suporte': 'bg-[#3C4F85]',
-        'Atualização PPPOE': 'bg-[#626672]',
+        'Atualização PPPoE': 'bg-[#626672]',
         'O.S Aprimorar': 'bg-[#6A5943]',
         'O.S Global': 'bg-[#844A19]',
         'O.S Reagendamento': 'bg-[#470A64]',
@@ -38,13 +38,13 @@ export const ColumnCard = ({ task, index }) => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                 >
-                    <div className={`overflow-y-auto p-2 rounded-md ${columnColor} min-w-[300px] max-h-[calc(100%-20px)] scrollbar-column z-10`}>
-                        <div className={`w-full flex justify-between gap-4 items-center text-white px-2 py-1.5 sticky top-0 ${colorTitle}`}>
+                    <div className={`overflow-y-auto rounded-md ${columnColor} min-w-[300px] max-h-[calc(100%-20px)] scrollbar-column p-2`}>
+                        <div className={`w-full flex justify-between gap-4 items-center text-white px-2 py-1.5 sticky top-0 rounded-sm ${colorTitle}`}>
                             <div className="flex items-center gap-3">
                                 <span className="w-2 h-2 bg-white rounded-full" />
-                                <span className="text-balance">{task.name}</span>
+                                <span className="text-balance ">{task.name}</span>
                             </div>
-                            <span className="font-bold text-[#9DA7C2]">{task.items?.length}</span>
+                            <span className="font-semibold text-white">{task.items?.length}</span>
                         </div>
                         {task.items.length > 0 &&
                             task.items.map((taskItem, taskID) => (
@@ -58,8 +58,7 @@ export const ColumnCard = ({ task, index }) => {
                         {provided.placeholder}
                         <button onClick={() => alert("Olá")} className={`${colorTitle} mt-2 px-3 py-1 rounded-md text-sm font-medium text-white flex gap-1 items-center`}><AddIcon />Novo Card</button>
                     </div>
-
-                </div>
+                    </div>
             )}
         </Droppable>
     )

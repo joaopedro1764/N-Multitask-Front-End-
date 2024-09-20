@@ -3,51 +3,72 @@ import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import LogoutIcon from '@mui/icons-material/Logout';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
 import { Notification } from "../Notification/Notification";
-import { useState } from "react";
+import Cookies from 'js-cookie';
 import { useLogout } from "../../hooks/userLogOut";
-export const SideBar = ({openSideBar, setOpenSideBar}) => {
-
-
-
+import { URL } from '../../utils/url';
+export const SideBar = ({ openSideBar, setOpenSideBar }) => {
     const { mutate } = useLogout();
+
+    let user;
+    const userCokkie = Cookies.get('userAuth');
+    if (userCokkie) {
+        user = JSON.parse(userCokkie)
+    }
+
     const Menus = [
-        { title: "Suporte Técnico", icon: <ContactPhoneIcon />, page: "/suporteTecnico" },
-        { title: "Dashboard Gerais", icon: <LeaderboardIcon />, page: "/dashBoard" },
+        { title: "Suporte", icon: <ContactPhoneIcon />, page: "/suporteTecnico" },
+        { title: "Dashboard", icon: <LeaderboardIcon />, page: "/dashBoard" },
         { title: "Ligações Ativas", icon: <PhoneForwardedIcon />, page: "/ligaçõesAtivas" },
         { title: "Avaliações Negativas", icon: <FactCheckIcon />, page: "/avaliacoesNegativas" },
+        { title: "NMT Monitoramento", icon: <DisplaySettingsIcon />, page: "/ligaçõesAtivas" },
+        { title: "Agenda Diária", icon: <CalendarMonthIcon />, page: "/ligaçõesAtivas" },
     ];
 
+    const getLogo = () => {
+        return openSideBar ? "LogoSSA.png" : "LogoS.png";
+    };
+
+
+
     return (
-        <div className={`h-screen bg-black-dark  rounded-r-md border-r-white border-r-[6px] ${openSideBar ? 'min-w-56' : 'min-w-16'}`}>
+        <div className={`h-screen bg-[#111111] rounded-r-md border-r-white border-r-[6px] ${openSideBar ? 'min-w-52' : 'min-w-16'}`}>
             <KeyboardDoubleArrowLeftIcon
                 onClick={() => setOpenSideBar(!openSideBar)}
                 className={`!w-10 !h-10 text-white cursor-pointer !mt-4 !float-right ${!openSideBar && 'rotate-180'}`}
             />
-            {openSideBar ? (
-                <img className="w-60 mt-24 mx-auto" alt="Logo SideBar" src={require("../../assets/logo.png")} />
-            ) : (
-                <img className="w-12 mt-24 mx-auto" alt="Logo SideBar Pequena" src={require("../../assets/logoN.png")} />
-            )}
+            <div className='flex justify-center mt-24 '>
+                <img
+                    className={openSideBar ? "w-60" : "w-10"}
+                    alt="Logo SideBar"
+                    src={require(`../../assets/${getLogo()}`)}
+                />;
+            </div>
 
-            <div className="flex flex-col w-full items-start justify-start text-white gap-y-4 mt-14">
-                {Menus.map((item, index) => (
-                    <a
-                        href={item.page}
-                        className={`flex items-center w-full gap-x-4 text-white px-5 py-3 
-                        cursor-pointer hover:text-black-dark hover:bg-white ${index === 0 && 'bg-white !text-black-dark'} ${!openSideBar && 'justify-center'} `}
-                        key={index}
-                    >
-                        {item.icon}
-                        <span className={`${!openSideBar && 'hidden'} font-medium duration-300 text-sm`}>{item.title}</span>
-                    </a>
-                ))}
+            <div className="flex-1 flex-col">
+                <div className="pl-5 flex flex-col gap-y-4 w-full items-start justify-start text-white mt-12">
+                    {Menus.map((item, index) => (
+                        <a
+                            href={item.page}
+                            className={`flex items-center w-full gap-x-4 text-white px-5 py-3 bg-[#2C2C2C] rounded-l-md
+                        cursor-pointer hover:text-black-dark hover:bg-white ${index === 0 && '!bg-white !text-black-dark'} ${!openSideBar && 'justify-center'} `}
+                            key={index}
+                        >
+                            {item.icon}
+                            <span className={`${!openSideBar && 'hidden'} font-medium duration-300 text-sm`}>{item.title}</span>
+                        </a>
 
-                <div className={`w-full h-20 flex items-center justify-center gap-x-4 rounded-md px-3 py-4 mt-72 ${!openSideBar && 'flex-col gap-3'}`}>
-                    <img className="w-14" alt="Foto usuário" src={require("../../assets/icon.png")} />
-                    <span className={`${!openSideBar && 'hidden'} text-white text-center font-medium text-xs`}>Gabriel Marques</span>
-                    <ExitToAppIcon onClick={mutate} className="!text-center !w-8 !cursor-pointer" />
+                    ))}
+                </div>
+                <div className={`w-full flex flex-col gap-y-2 items-center justify-center gap-x-4 px-3 py-4 mt-48`}>
+                    <img className="w-14 rounded-full object-cover" alt="Foto usuário" src={"https://nmt.nmultifibra.com.br/notion/ws" + user.profile_image} />
+                    <div className='flex items-center gap-x-1.5'>
+                        <span className={`${!openSideBar && 'hidden'} text-white text-center font-medium text-md`}>{user?.name}</span>
+                        <LogoutIcon onClick={mutate} className="!text-center !w-8 !cursor-pointer text-white" />
+                    </div>
                 </div>
             </div>
             <Notification />
