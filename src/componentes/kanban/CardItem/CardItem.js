@@ -10,7 +10,7 @@ import { showToast } from '../../Notification/Notification';
 export const CardItem = ({ task, index, taskItem }) => {
 
     const userCookieString = Cookies.get('userAuth');
-    const { sendMessage, message } = useWebSocketContext()
+    const { sendMessage } = useWebSocketContext()
     const [commentValue, setCommentValue] = useState("")
     let comment = JSON.parse(taskItem.description);
     let dateNow = moment().format("DD/MM/YYYY HH:mm")

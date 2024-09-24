@@ -20,7 +20,7 @@ export const SuporteTecnico = () => {
     useEffect(() => {
         if (isConnected && message) {
             const data = JSON.parse(message);
-            if (data.type === "update_board") {
+            if (data.type === "update_board" && data.data?.cards[0]?.pageId === "taskSupport") {
                 setDataTeste(data.data.cards);
             }
         }
@@ -62,7 +62,7 @@ export const SuporteTecnico = () => {
     };
 
     const createTasks = () => {
-        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", assignee: "Felippe Gonçalves", title: "70524 - Atualizar Login PPPoE ", created_time: '', description: JSON.stringify([]), created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
+        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", pageId: 'tasksSupport', todo_time: "21/09/2024 12", assignee: "Felippe Gonçalves", title: "70524 - Atualizar Login PPPoE ", created_time: '', description: JSON.stringify([]), created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
         sendMessage(message);
     }
 
@@ -101,16 +101,17 @@ export const SuporteTecnico = () => {
                                 </div>
                             </div>
                             <div className="col-start-2 col-end-4 row-start-2 row-end-2">
-                                <div className="relative flex items-center w-[650px] -ml-32 ">
+                                <div className="relative flex items-center w-full max-w-lg lg:w-[650px]">
                                     <input
-                                        className="w-full p-3 pr-10 rounded-sm bg-[#111111] text-white placeholder-gray-400 focus:outline-none "
+                                        className="w-full p-3 pr-10 rounded-sm bg-[#111111] text-white placeholder-gray-400 focus:outline-none"
                                         type="text"
                                         placeholder="Digite o que você está procurando..."
                                     />
                                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <PageviewIcon className="text-white !w-10 !h-10 " />
+                                        <PageviewIcon className="text-white !w-10 !h-10" />
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

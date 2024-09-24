@@ -9,7 +9,6 @@ import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
 import { Notification } from "../Notification/Notification";
 import Cookies from 'js-cookie';
 import { useLogout } from "../../hooks/userLogOut";
-import { URL } from '../../utils/url';
 export const SideBar = ({ openSideBar, setOpenSideBar }) => {
     const { mutate } = useLogout();
 
@@ -36,20 +35,22 @@ export const SideBar = ({ openSideBar, setOpenSideBar }) => {
 
     return (
         <div className={`h-screen bg-[#111111] rounded-r-md border-r-white border-r-[6px] ${openSideBar ? 'min-w-52' : 'min-w-16'}`}>
+            
             <KeyboardDoubleArrowLeftIcon
                 onClick={() => setOpenSideBar(!openSideBar)}
-                className={`!w-10 !h-10 text-white cursor-pointer !mt-4 !float-right ${!openSideBar && 'rotate-180'}`}
+                className={`!w-10 !h-10 text-white cursor-pointer !mt-2 !float-right ${!openSideBar && 'rotate-180'}`}
             />
-            <div className='flex justify-center mt-24 '>
-                <img
-                    className={openSideBar ? "w-60" : "w-10"}
+
+            <div className='w-full h-screen flex flex-col'>
+           
+            <img
+                    className={`my-12 mx-auto ${openSideBar ? "w-60" : "w-10"}`}
                     alt="Logo SideBar"
                     src={require(`../../assets/${getLogo()}`)}
-                />;
-            </div>
+                />
 
-            <div className="flex-1 flex-col">
-                <div className="pl-5 flex flex-col gap-y-4 w-full items-start justify-start text-white mt-12">
+                <div className=" flex flex-col gap-y-4 w-full text-white pl-5">
+                
                     {Menus.map((item, index) => (
                         <a
                             href={item.page}
@@ -63,8 +64,8 @@ export const SideBar = ({ openSideBar, setOpenSideBar }) => {
 
                     ))}
                 </div>
-                <div className={`w-full flex flex-col gap-y-2 items-center justify-center gap-x-4 px-3 py-4 mt-48`}>
-                    <img className="w-14 rounded-full object-cover" alt="Foto usuário" src={"https://nmt.nmultifibra.com.br/notion/ws" + user.profile_image} />
+                <div className={`w-full flex-1 flex flex-col gap-y-2 items-center justify-center gap-x-4`}>
+                    <img className="w-14 rounded-full object-cover" alt="Foto usuário" src={"https://nmt.nmultifibra.com.br/notion/ws" + user?.profile_image} />
                     <div className='flex items-center gap-x-1.5'>
                         <span className={`${!openSideBar && 'hidden'} text-white text-center font-medium text-md`}>{user?.name}</span>
                         <LogoutIcon onClick={mutate} className="!text-center !w-8 !cursor-pointer text-white" />
@@ -73,5 +74,6 @@ export const SideBar = ({ openSideBar, setOpenSideBar }) => {
             </div>
             <Notification />
         </div>
+    
     )
 }

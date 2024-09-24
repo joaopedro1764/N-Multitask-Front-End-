@@ -15,9 +15,9 @@ export const Rotas = () => {
     <Routes>
       <Route path="/" element={userAuth !== undefined ? <Navigate to="/suporteTecnico" /> : <Login />} />
       <Route path="/suporteTecnico" element={
-        //<RoutePrivate>
+        <RoutePrivate>
           <SuporteTecnico />
-       // </RoutePrivate>
+       </RoutePrivate>
       } />
       <Route path="/grafic" element={
         <Grafic />
