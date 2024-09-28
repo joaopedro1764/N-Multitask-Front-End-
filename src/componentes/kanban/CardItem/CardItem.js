@@ -15,6 +15,7 @@ export const CardItem = ({ task, index, taskItem }) => {
     let comment = JSON.parse(taskItem.description);
     let dateNow = moment().format("DD/MM/YYYY HH:mm")
     let nameUser;
+    console.log(userCookieString)
 
     if (userCookieString) {
         let userCookie = JSON.parse(userCookieString);

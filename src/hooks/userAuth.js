@@ -17,13 +17,8 @@ export const useLogin = () => {
             window.location.href = "/suporteTecnico"
         },
         onError: (error) => {
-            if (error.response.status === 401) {
-                showToast("Usuário e/ou senha incorreto!", "error");
-            } else if (error.response.status === 409) {
-                showToast("Usuário já está logado!", "error");
-            } else {
-                showToast("Erro no servidor, tente novamente ;-;!", "error");
-            }
+            console.log(error)
+            showToast(error.response.data, "error");
         }
     });
 

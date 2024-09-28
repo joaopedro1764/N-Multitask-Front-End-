@@ -28,7 +28,8 @@ export const useLogout = () => {
             window.location.href = "/"
         },
         onError: (error) => {
-            showToast(error.message, "error")
+            console.log(error)
+            showToast(error.response.data, "error")
         }
     });
 

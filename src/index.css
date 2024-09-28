@@ -12,6 +12,17 @@
     src: url("./fonts/Kodchasan/Kodchasan-Regular.ttf");
 }
 
+@font-face {
+    font-family: "Saira-bold";
+    src: url("./fonts/Saira/Saira-Bold.ttf");
+}
+
+@font-face {
+    font-family: "Saira-medium";
+    src: url("./fonts/Saira/Saira-Medium.ttf");
+}
+
+
 
 @layer utilities {
     .scrollbar-kanban::-webkit-scrollbar {

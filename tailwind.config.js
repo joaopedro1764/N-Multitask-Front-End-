@@ -5,10 +5,13 @@ module.exports = {
     extend: {
       colors: {
         "black-dark": "#111111",
+        "blue-fit": "#244575"
       },
       fontFamily: {
         'kodchasan': ['Kodchasan-regular', 'sans-serif'],
         'kodchasan-bold': ['Kodchasan-bold', 'sans-serif'],
+        'saira-medium': ['Saira-medium', 'sans-serif'],
+        'saira-bold': ['Saira-bold', 'sans-serif']
       },
       backgroundImage: {
         'fundo-suporte': "url('/src/assets/FundoSuporte.png')",

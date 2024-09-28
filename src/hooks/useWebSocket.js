@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import Cookies from 'js-cookie';
 
 export const useWebSocket = (url) => {
+    
+    const userCookieString = Cookies.get('userAuth');
     const [socket, setSocket] = useState(null);
     const [isConnected, setIsConnected] = useState(false);
     const [message, setMessage] = useState(null);
@@ -32,15 +35,17 @@ export const useWebSocket = (url) => {
         }
     }, []);
 
-   
+
 
     useEffect(() => {
-        connect();
-        return () => {
-            if (socketRef.current) {
-                socketRef.current.close();
-            }
-        };
+    if (userCookieString !== undefined) {
+            connect();
+            return () => {
+                if (socketRef.current) {
+                    socketRef.current.close();
+                }
+            };
+        }
     }, [connect]);
     return { socket, isConnected, message, sendMessage };
 };
