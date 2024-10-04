@@ -8,8 +8,8 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { ColumnCard } from '../componentes/kanban/ColumnCard/ColumnCard';
 import { useWebSocketContext } from '../hooks/useWebSocketProvider';
 import { useWebSocketPingPong } from '../hooks/useWebSocketPingPong';
-import { set } from 'react-hook-form';
 import { ModalRegisterTask } from '../componentes/Modal/ModalRegisterTask';
+
 
 export const SuporteTecnico = () => {
 
@@ -20,16 +20,16 @@ export const SuporteTecnico = () => {
     const [dataTeste, setDataTeste] = useState([]);
     const [openModal, setOpenModal] = useState(false);
 
+
     useEffect(() => {
         if (isConnected && message) {
             const data = JSON.parse(message);
-            console.log(data)
-            if (data.type === "update_board" && data.data.cards[0].pageId === "tasksSupport") {
+            if (data.type === "update_board" && data.data?.cards[0]?.pageId === "tasksSupport") {
+                console.log("OIII")
                 setDataTeste(data.data.cards);
             } 
         }
     }, [isConnected, message]);
-
 
     const onDragEnd = (re) => {
 
@@ -64,12 +64,6 @@ export const SuporteTecnico = () => {
         });
         sendMessage(message);
     };
-
-    const createTasks = () => {
-        const message = JSON.stringify({ type: 'custom_action', action: "addCard", input: { status: "Casos Suporte", pageId: 'tasksSupport', todo_time: "21/09/2024 12", assignee: "Felippe Gonçalves", title: "70524 - Atualizar Login PPPoE ", created_time: '', description: JSON.stringify([]), created_by: "", lineAddress: "Avenida das cruzadas, 89 - Paisagem Casa Grande", province: "https://media.licdn.com/dms/image/v2/D4D03AQEkOMED_bWdFg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714174602974?e=1730332800&v=beta&t=KtI0pZtM2WWk7l-OCYS2kW29o3UWHlB-KYOok_WPdjc", city: "Cotia", team: "Suporte" } });
-        sendMessage(message);
-    }
-
 
     return (
         <div className="flex w-screen h-screen overflow-hidden">

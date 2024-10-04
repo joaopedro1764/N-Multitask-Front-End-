@@ -7,7 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
 import Cookies from 'js-cookie';
-import { useLogout } from "../../hooks/userLogOut";
+import { useLogout } from "../../hooks/useLogOut";
 export const SideBar = ({ openSideBar, setOpenSideBar }) => {
 
     const { mutate } = useLogout();

@@ -11,6 +11,7 @@ if (userCookieString) {
     userAuth = userCookie.userAuth;
 }
 
+
 const logoutUser = async () => {
     return await axios.get("http://10.0.30.221:5228/DeauthenticateUser", {
         headers: {
@@ -28,7 +29,6 @@ export const useLogout = () => {
             window.location.href = "/"
         },
         onError: (error) => {
-            console.log(error)
             showToast(error.response.data, "error")
         }
     });

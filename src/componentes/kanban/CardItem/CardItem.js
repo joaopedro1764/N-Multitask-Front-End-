@@ -9,13 +9,13 @@ import Cookies from 'js-cookie';
 import { showToast } from '../../Notification/Notification';
 export const CardItem = ({ task, index, taskItem }) => {
 
+
     const userCookieString = Cookies.get('userAuth');
     const { sendMessage } = useWebSocketContext()
     const [commentValue, setCommentValue] = useState("")
     let comment = JSON.parse(taskItem.description);
-    let dateNow = moment().format("DD/MM/YYYY HH:mm")
     let nameUser;
-    console.log(userCookieString)
+
 
     if (userCookieString) {
         let userCookie = JSON.parse(userCookieString);
@@ -75,7 +75,7 @@ export const CardItem = ({ task, index, taskItem }) => {
             if (commentValue?.trim()) {
                 let jsonComment = {
                     user: nameUser,
-                    date: dateNow,
+                    date: moment().format("DD/MM/YYYY HH:mm"),
                     comment: commentValue
                 };
                 comment.push(jsonComment);
@@ -93,8 +93,8 @@ export const CardItem = ({ task, index, taskItem }) => {
         }
     };
 
-    const colorStatus = validateStatusColor(moment(taskItem.created_time).format("DD/MM/YYYY"))
-    const borderColor = validateStatusColor(moment(taskItem.created_time).format("DD/MM/YYYY"))
+    const colorStatus = validateStatusColor(moment(taskItem.todo_time).format("DD/MM/YYYY"))
+    const borderColor = validateStatusColor(moment(taskItem.todo_time).format("DD/MM/YYYY"))
     const border = BORDERS_COLORS[borderColor]
     const color = STATUS_COLORS[colorStatus]
     const getCardColor = (task) => CARD_COLORS[task.name] || '';
@@ -114,7 +114,7 @@ export const CardItem = ({ task, index, taskItem }) => {
                         <div className='w-full flex justify-between'>
                             <SLA color={color} taskItem={taskItem} />
                             <span className={`${color} px-2 py-1 text-sm rounded-md text-[#354165] font-bold flex gap-2 items-center`}>
-                                {moment(taskItem.created_time).format('DD/MM/YYYY')}
+                                {moment(taskItem.todo_time).format('DD/MM/YYYY')}
                                 <CalendarMonthIcon fontSize='small' />
                             </span>
                         </div>
@@ -123,7 +123,7 @@ export const CardItem = ({ task, index, taskItem }) => {
                             <span className='text-white text-lg font-medium'>{taskItem.title}</span>
                             <div className='w-full relative flex items-center justify-between gap-3 '>
                                 <div className='w-full flex gap-3'>
-                                    <img src={taskItem.province} className='w-8 h-8 rounded-full object-cover' alt='User Image' />
+                                    <img src={"https://nmt.nmultifibra.com.br/notion/ws" + taskItem.user_img} className='w-8 h-8 rounded-full object-cover' alt='User Image' />
                                     <span className='text-white text-base'>{taskItem.assignee}</span>
                                 </div>
                                 <p className='text-white'>{comment.length}</p>
