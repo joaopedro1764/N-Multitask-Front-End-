@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useForm } from "react-hook-form"
 import CloseIcon from '@mui/icons-material/Close';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useWebSocketContext } from "../../hooks/useWebSocketProvider";
 import BorderColorSharpIcon from '@mui/icons-material/BorderColorSharp';
 import moment from "moment";
@@ -10,15 +10,34 @@ import { useGetUser } from '../../hooks/useUser';
 import Data from "../../utils/data.json"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { ImPencil2 } from "react-icons/im";
 
 export const ModalRegisterTask = ({ open, setOpen }) => {
 
+    const { users } = useGetUser();
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState({ name: "", profile_image: "" });
+    const [value, setValue] = useState("")
+    const { sendMessage, message } = useWebSocketContext();
+    const userCookieString = Cookies.get('userAuth');
+    const itemsPriority = [
+        { value: 'normal', label: 'Normal' },
+        { value: 'importante', label: 'Importante' },
+        { value: 'critico', label: 'Crítico' }
+
+    ];
+    let user;
+
+    if (userCookieString) {
+        let userCookie = JSON.parse(userCookieString);
+        user = userCookie;
+    }
 
     const schemaForms = z.object({
         task: z.object({
             "priority": z.enum(["normal", "critico", "importante"], {
                 errorMap: () => ({ message: "Selecione uma opção." })
-              }),
+            }),
             "client": z.string().min(5, "Por favor, digite um cliente válido."),
             "date": z.string().min(1, "Por favor, selecione uma data."),
             "subject": z.string().min(1, "Por favor, selecione um assunto válido."),
@@ -26,16 +45,6 @@ export const ModalRegisterTask = ({ open, setOpen }) => {
             "comment": z.string().nullable()
         })
     })
-
-    const { users } = useGetUser()
-
-    let user;
-    const userCookieString = Cookies.get('userAuth');
-
-    if (userCookieString) {
-        let userCookie = JSON.parse(userCookieString);
-        user = userCookie;
-    }
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         criteriaMode: 'all',
@@ -52,51 +61,56 @@ export const ModalRegisterTask = ({ open, setOpen }) => {
             }
         }
     })
-    const [value, setValue] = useState("")
-    const { sendMessage, message } = useWebSocketContext();
-    const itemsPriority = [
-        { value: 'normal', label: 'Normal' },
-        { value: 'importante', label: 'Importante' },
-        { value: 'critico', label: 'Crítico' }
-
-    ]
-
 
     const registerTask = (data) => {
-      
-        console.log(data)
 
         const message = JSON.stringify({
             type: 'custom_action', action: "addCard",
             input: {
-                status: data.subject,
+                status: data.task.subject,
                 pageId: 'tasksSupport',
                 team: "Suporte",
-                todo_time: data.date,
-                assignee: data.collaborator,
-                title: data.id,
-                description: JSON.stringify([data.comment]),
+                todo_time: data.task.date,
+                assignee: selectedUser.name,
+                title: data.task.client,
+                description: JSON.stringify([data.task.comment]),
                 created_by: user?.name,
-                user_img: user?.profile_image
+                user_img: selectedUser.profile_image
             }
         });
         sendMessage(message);
         setOpen(false);
-        reset();
+        clearForm();
     }
+
+
+    const toggleDropdown = () => setIsOpen(!isOpen);
+
+    const selectUser = (user) => {
+        setSelectedUser({ name: user.name, profile_image: user.profile_image });
+        setIsOpen(false);
+    };
+
+    const clearForm = () => {
+        setIsOpen(false);
+        setSelectedUser({ user: "", profile_image: "" });
+        reset();
+
+    };
 
     return (
 
-        <Dialog open={open} as="div" className="relative font-saira-medium z-10 focus:outline-none flex justify-center items-center" onClose={() => setOpen(false)}>
+        <Dialog open={open} as="div" className="relative font-saira-medium z-10 focus:outline-none flex justify-center items-center"
+            onClose={() => { setOpen(false); clearForm() }}>
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                 <div className="flex min-h-full items-center justify-center">
                     <DialogPanel
                         transition
                         className="max-w-[800px] relative bg-white rounded-xl p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border-l-[46px] border-l-[#FFDD63]"
                     >
-                        <CloseIcon className="absolute right-3 !w-10 !h-10 top-3 cursor-pointer" onClick={() => { setOpen(false); reset(); }} />
+                        <CloseIcon className="absolute right-3 !w-10 !h-10 top-3 cursor-pointer" onClick={() => { setOpen(false); clearForm(); }} />
 
-                        <h1 class="flex items-center font-saira-bold text-5xl gap-x-4 mt-4 text-blue-fit">Tarefa <BorderColorSharpIcon className='!w-14 !h-14' /> </h1>
+                        <h1 class="flex items-center font-saira-bold text-5xl gap-x-5 mt-4 text-blue-fit">Tarefa <ImPencil2 className='!w-8 "h-8' /> </h1>
 
                         <form onSubmit={handleSubmit(registerTask)} className="grid grid-cols-2 grid-rows-4 w-full h-full">
                             <div className="w-full flex flex-col">
@@ -104,7 +118,7 @@ export const ModalRegisterTask = ({ open, setOpen }) => {
                                 <div class="flex gap-x-3 mt-3 ">
                                     {itemsPriority.map(item => (
                                         <div className="flex items-center gap-x-2" key={item.value}>
-                                            <label htmlFor={item.value} className="cursor-pointer font-saira-medium">
+                                            <label htmlFor={item.value} className="cursor-pointer font-saira-medium font-bold">
                                                 {item.label}
                                             </label>
                                             <input
@@ -173,18 +187,50 @@ export const ModalRegisterTask = ({ open, setOpen }) => {
                                     )}
                                 </div>
                                 <div className="flex flex-col">
-                                    <label for="collaborator" class="tracking-wide font-saira-medium font-bold mb-2 text-blue-fit" htmlFor='collaborator'>Defina o colaborador: (opcional)</label>
-                                    <select
-                                        id="collaborator"
-                                        {...register("task.collaborator")}
-                                        class="w-64 bg-gray text-gray border-2 border-black rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                        <option class="text-black-500" value="" disabled selected hidden>Colaborador</option>
-                                        {
-                                            users.map((user, index) => (
-                                                <option key={index} value={user.name}>{user.name}</option>
-                                            ))
-                                        }
-                                    </select>
+                                    <label class="tracking-wide font-saira-medium font-bold mb-2 text-blue-fit" htmlFor="comment">
+                                        Defina o colaborador: (opcional)
+                                    </label>
+                                    <div className="relative w-64">
+                                        <button
+                                            onClick={toggleDropdown}
+                                            className="w-64 bg-gray text-gray border-2 border-black rounded-lg py-[15px]
+                                             px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 flex items-center justify-between gap-x-3">
+
+                                            {selectedUser && selectedUser.name ? (
+                                                <div className='flex gap-x-3 items-center'>
+                                                    <img
+                                                        className="w-8 rounded-full object-cover"
+                                                        alt="Foto usuário"
+                                                        src={`https://nmt.nmultifibra.com.br/notion/ws${selectedUser.profile_image}`}
+                                                    />
+                                                    <span>{selectedUser.name}</span>
+                                                </div>
+                                            ) : (
+                                                <span>Colaborador</span>
+                                            )}
+                                            <svg className="h-5 w-5 inline-block float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 10l5 5 5-5H7z" />
+                                            </svg>
+                                        </button>
+                                        {isOpen && (
+                                            <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 overflow-y-auto max-h-[150px]">
+                                                {users.map((user) => (
+                                                    <div
+                                                        key={user.id}
+                                                        onClick={() => selectUser(user)}
+                                                        className="flex items-center px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                                                    >
+                                                        <img
+                                                            src={"https://nmt.nmultifibra.com.br/notion/ws" + user.profile_image}
+                                                            alt={user.name}
+                                                            className="h-8 w-8 rounded-full mr-2"
+                                                        />
+                                                        {user.name}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                     {errors.task?.collaborator?.message && (
                                         <p className='text-red-600 text-sm mt-1'>{errors.task.collaborator?.message}</p>
                                     )}
@@ -196,7 +242,7 @@ export const ModalRegisterTask = ({ open, setOpen }) => {
                                 </label>
                                 <textarea
                                     id='comment'
-                                    class="w-96 flex text-gray-700 border-2 border-black rounded-lg py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white resize-none"
+                                    class="w-96 flex border-2 border-black rounded-lg py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white resize-none"
                                     type="text"
                                     placeholder="Escreva um comentario"
                                     {...register("task.comment")}

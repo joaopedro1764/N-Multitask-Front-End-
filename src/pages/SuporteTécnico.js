@@ -25,7 +25,6 @@ export const SuporteTecnico = () => {
         if (isConnected && message) {
             const data = JSON.parse(message);
             if (data.type === "update_board" && data.data?.cards[0]?.pageId === "tasksSupport") {
-                console.log("OIII")
                 setDataTeste(data.data.cards);
             } 
         }
@@ -64,6 +63,8 @@ export const SuporteTecnico = () => {
         });
         sendMessage(message);
     };
+
+    console.log(dataTeste)
 
     return (
         <div className="flex w-screen h-screen overflow-hidden">
@@ -105,6 +106,11 @@ export const SuporteTecnico = () => {
                                         Filtro
                                         <ExpandCircleDownIcon className='!w-7 !h-7' />
                                     </span>
+                                    {/* {
+                                        dataTeste.map((t)=>(
+                                            <p>{t.}</p>
+                                        ))
+                                    } */}
                                 </div>
                             </div>
 

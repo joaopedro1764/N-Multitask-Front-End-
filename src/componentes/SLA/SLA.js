@@ -8,6 +8,9 @@ export const SLA = ({ color, taskItem }) => {
     const [slaPercentage, setSlaPercentage] = useState(0);
 
     const calculateSLA = () => {
+        if (taskItem.status === "Concluidos" || taskItem.status === "Não Solucionado") {
+            return 0;
+        }
         const slaHours = 12;
         const duration = Math.abs(moment().diff(moment(taskItem.created_time), 'hours'));
         return Math.round(duration >= slaHours ? 0 : 100 - (duration / slaHours) * 100);
