@@ -26,7 +26,7 @@ export const SuporteTecnico = () => {
             const data = JSON.parse(message);
             if (data.type === "update_board" && data.data?.cards[0]?.pageId === "tasksSupport") {
                 setDataTeste(data.data.cards);
-            } 
+            }
         }
     }, [isConnected, message]);
 
@@ -64,13 +64,13 @@ export const SuporteTecnico = () => {
         sendMessage(message);
     };
 
-    console.log(dataTeste)
+
 
     return (
         <div className="flex w-screen h-screen overflow-hidden">
             <SideBar setOpenSideBar={setOpenSideBar} openSideBar={openSideBar} />
             <div className='flex-1 bg-fundo-suporte bg-center bg-cover bg-no-repeat h-full overflow-hidden'>
-         
+
                 <div className={`flex flex-col ml-6 mr-1 h-full relative`}>
                     <div className='w-full flex flex-col justify-center items-center mt-10 gap-y-4'>
                         <h1 className='text-white text-7xl'>TASKS DEMANDAS</h1>
@@ -79,7 +79,7 @@ export const SuporteTecnico = () => {
 
                     <div className="h-auto w-full my-2">
                         <div className="grid h-full w-full grid-cols-1 xl:grid-cols-2 gap-2 lg:grid-cols-3 2xl:grid-cols-4">
-                           
+
                             <div className="col-span-1 sm:col-span-2 row-span-1 sm:row-span-2 lg:col-start-4 lg:col-end-5">
                                 <div className='flex flex-col w-full sm:w-96 h-32 bg-[#111111] rounded-sm px-4 py-2'>
                                     <span className='text-white text-2xl font-bold'>Status</span>
@@ -98,7 +98,7 @@ export const SuporteTecnico = () => {
                                 </div>
                             </div>
 
-                            
+
                             <div className="col-span-1 sm:col-span-1 row-span-1">
                                 <div className='flex bg-[#111111] w-full sm:w-52 rounded-sm p-3'>
                                     <span onClick={() => alert("oi")}
@@ -106,15 +106,10 @@ export const SuporteTecnico = () => {
                                         Filtro
                                         <ExpandCircleDownIcon className='!w-7 !h-7' />
                                     </span>
-                                    {/* {
-                                        dataTeste.map((t)=>(
-                                            <p>{t.}</p>
-                                        ))
-                                    } */}
                                 </div>
                             </div>
 
-                          
+
                             <div className="col-span-1 sm:col-span-2 1xl:col-span-3 row-span-1 2xl:col-span-3 2xl:row-start-2 2xl:col-start-2 2xl:col-end-2">
                                 <div className="relative flex items-center w-full max-w-full sm:max-w-md lg:w-[650px] max-xl:w-[350px]">
                                     <input

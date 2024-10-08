@@ -50,7 +50,6 @@ export const CardItem = ({ task, index, taskItem }) => {
     const isInNextDays = (date, days = 30) => {
         const today = moment();
         const targetDate = moment(date, 'DD/MM/YYYY');
-        console.log(targetDate)
         return targetDate.isAfter(today, 'day') && targetDate.diff(today, 'days') <= days;
     };
 

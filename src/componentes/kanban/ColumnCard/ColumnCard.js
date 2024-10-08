@@ -1,6 +1,8 @@
 import { Droppable } from "react-beautiful-dnd";
 import { CardItem } from "../CardItem/CardItem";
 import AddIcon from '@mui/icons-material/Add';
+import { ModalRegisterTask } from "../../Modal/ModalRegisterTask";
+import { useState } from "react";
 
 export const ColumnCard = ({ task, index }) => {
 
@@ -31,8 +33,11 @@ export const ColumnCard = ({ task, index }) => {
     const getTitleColor = (task) => TITLE_COLORS[task.name];
     const colorTitle = getTitleColor(task)
 
+    const [value, setValue] = useState("")
+    const [open, setOpen] = useState(false)
+
     return (
-        <Droppable droppableId={index.toString()}>
+        <>        <Droppable droppableId={index.toString()}>
             {(provided) => (
                 <div
                     ref={provided.innerRef}
@@ -56,11 +61,14 @@ export const ColumnCard = ({ task, index }) => {
                                 />
                             ))}
                         {provided.placeholder}
-                        <button onClick={() => alert("Olá")} className={`${colorTitle} mt-2 px-3 py-1 rounded-md text-sm font-medium text-white flex gap-1 items-center`}><AddIcon />Novo Card</button>
+                        <button onClick={() => { setValue(task.name); setOpen(true) }} className={`${colorTitle} mt-2 px-3 py-1 rounded-md text-sm font-medium text-white flex gap-1 items-center`}><AddIcon />Novo Card</button>
                     </div>
-                    </div>
+                </div>
             )}
         </Droppable>
+            <ModalRegisterTask open={open} setOpen={setOpen} value={value} />
+        </>
+
     )
 
 }

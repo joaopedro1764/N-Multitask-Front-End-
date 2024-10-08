@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import { Dialog, DialogPanel, Radio } from '@headlessui/react'
 import { useForm } from "react-hook-form"
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from "react";
@@ -12,13 +12,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ImPencil2 } from "react-icons/im";
 
-export const ModalRegisterTask = ({ open, setOpen }) => {
+export const ModalRegisterTask = ({ open, setOpen, value }) => {
 
     const { users } = useGetUser();
     const [isOpen, setIsOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState({ name: "", profile_image: "" });
-    const [value, setValue] = useState("")
-    const { sendMessage, message } = useWebSocketContext();
+    const { sendMessage } = useWebSocketContext();
     const userCookieString = Cookies.get('userAuth');
     const itemsPriority = [
         { value: 'normal', label: 'Normal' },
@@ -46,16 +45,18 @@ export const ModalRegisterTask = ({ open, setOpen }) => {
         })
     })
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+
+
+    const { register, handleSubmit, reset, watch, formState: { errors } } = useForm({
         criteriaMode: 'all',
         mode: 'all',
         resolver: zodResolver(schemaForms),
         defaultValues: {
             task: {
-                "priority": "",
+                "priority": "normal",
                 "client": "",
                 "date": "",
-                "subject": "",
+                "subject": value !== "" ? value : "",
                 "collaborator": "",
                 "comment": ""
             }
@@ -63,7 +64,6 @@ export const ModalRegisterTask = ({ open, setOpen }) => {
     })
 
     const registerTask = (data) => {
-
         const message = JSON.stringify({
             type: 'custom_action', action: "addCard",
             input: {
@@ -98,6 +98,32 @@ export const ModalRegisterTask = ({ open, setOpen }) => {
 
     };
 
+    const BORDER_COLOR = {
+        "normal": "border-l-[#83FF57]",
+        "importante": "border-l-[#FFDD63]",
+        "critico": "border-l-[#FF5F49]"
+    };
+
+    const taskPriority = watch('task.priority');
+
+    const border = BORDER_COLOR[taskPriority] || 'border-l-[#FFDD63]';
+
+
+    useEffect(() => {
+        if (value !== "" && open) {
+            reset({
+                task: {
+                    priority: "normal",
+                    client: "",
+                    date: "",
+                    subject: value !== "" ? value : "",
+                    collaborator: "",
+                    comment: ""
+                }
+            });
+        }
+    }, [open, value, reset]);
+
     return (
 
         <Dialog open={open} as="div" className="relative font-saira-medium z-10 focus:outline-none flex justify-center items-center"
@@ -106,7 +132,7 @@ export const ModalRegisterTask = ({ open, setOpen }) => {
                 <div className="flex min-h-full items-center justify-center">
                     <DialogPanel
                         transition
-                        className="max-w-[800px] relative bg-white rounded-xl p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border-l-[46px] border-l-[#FFDD63]"
+                        className={`max-w-[800px] relative bg-white rounded-xl p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border-l-[46px] ${border}`}
                     >
                         <CloseIcon className="absolute right-3 !w-10 !h-10 top-3 cursor-pointer" onClick={() => { setOpen(false); clearForm(); }} />
 
@@ -126,7 +152,6 @@ export const ModalRegisterTask = ({ open, setOpen }) => {
                                                 id={item.value}
                                                 type="radio"
                                                 value={item.value}
-                                                onChange={e => setValue(e.target.value)}
                                             />
 
                                         </div>
@@ -175,7 +200,7 @@ export const ModalRegisterTask = ({ open, setOpen }) => {
                                     <select
                                         id='subject'
                                         {...register("task.subject")}
-                                        class="w-64 bg-gray text-gray border-2 border-black rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ">
+                                        class="w-64 bg-gray text-gray border-2 border-black cursor-pointer rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ">
                                         <option value="" disabled selected hidden>Assunto</option>
                                         {Data.map((subject, index) => (
                                             <option key={index} value={subject.name}>{subject.name}</option>
