@@ -17,15 +17,14 @@ export const SuporteTecnico = () => {
     useWebSocketPingPong(sendMessage)
     const [openSideBar, setOpenSideBar] = useState(true);
     const [boardData] = useState(Data);
-    const [dataTeste, setDataTeste] = useState([]);
+    const [dataCard, setDataCard] = useState([]);
     const [openModal, setOpenModal] = useState(false);
-
 
     useEffect(() => {
         if (isConnected && message) {
             const data = JSON.parse(message);
             if (data.type === "update_board" && data.data?.cards[0]?.pageId === "tasksSupport") {
-                setDataTeste(data.data.cards);
+                setDataCard(data.data.cards);
             }
         }
     }, [isConnected, message]);
@@ -64,8 +63,6 @@ export const SuporteTecnico = () => {
         sendMessage(message);
     };
 
-
-
     return (
         <div className="flex w-screen h-screen overflow-hidden">
             <SideBar setOpenSideBar={setOpenSideBar} openSideBar={openSideBar} />
@@ -98,7 +95,6 @@ export const SuporteTecnico = () => {
                                 </div>
                             </div>
 
-
                             <div className="col-span-1 sm:col-span-1 row-span-1">
                                 <div className='flex bg-[#111111] w-full sm:w-52 rounded-sm p-3'>
                                     <span onClick={() => alert("oi")}
@@ -108,7 +104,6 @@ export const SuporteTecnico = () => {
                                     </span>
                                 </div>
                             </div>
-
 
                             <div className="col-span-1 sm:col-span-2 1xl:col-span-3 row-span-1 2xl:col-span-3 2xl:row-start-2 2xl:col-start-2 2xl:col-end-2">
                                 <div className="relative flex items-center w-full max-w-full sm:max-w-md lg:w-[650px] max-xl:w-[350px]">
@@ -128,7 +123,7 @@ export const SuporteTecnico = () => {
                     <DragDropContext onDragEnd={onDragEnd}>
                         <div className="flex w-full space-x-5 mt-6 overflow-x-auto overflow-y-hidden h-full scrollbar-kanban">
                             {boardData.map((data, index) => {
-                                data.items = dataTeste.filter(element => element.status === data.name);
+                                data.items = dataCard.filter(element => element.status === data.name);
 
                                 return (
                                     <ColumnCard

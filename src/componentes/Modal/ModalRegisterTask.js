@@ -14,6 +14,9 @@ import { ImPencil2 } from "react-icons/im";
 
 export const ModalRegisterTask = ({ open, setOpen, value }) => {
 
+    console.log("oi");
+
+
     const { users } = useGetUser();
     const [isOpen, setIsOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState({ name: "", profile_image: "" });
@@ -45,11 +48,9 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
         })
     })
 
-
-
     const { register, handleSubmit, reset, watch, formState: { errors } } = useForm({
         criteriaMode: 'all',
-        mode: 'all',
+        mode: 'onBlur',
         resolver: zodResolver(schemaForms),
         defaultValues: {
             task: {
@@ -63,7 +64,7 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
         }
     })
 
-    const registerTask = (data) => {
+    const registerTask = async (data) => {
         const message = JSON.stringify({
             type: 'custom_action', action: "addCard",
             input: {
@@ -82,7 +83,6 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
         setOpen(false);
         clearForm();
     }
-
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -217,6 +217,7 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                                     </label>
                                     <div className="relative w-64">
                                         <button
+                                            type='button'
                                             onClick={toggleDropdown}
                                             className="w-64 bg-gray text-gray border-2 border-black rounded-lg py-[15px]
                                              px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 flex items-center justify-between gap-x-3">
