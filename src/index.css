@@ -52,3 +52,7 @@
 
    
 }
+
+html{
+    @apply font-saira-medium
+}

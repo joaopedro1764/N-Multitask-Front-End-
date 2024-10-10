@@ -26,11 +26,11 @@ export const CardItem = ({ task, index, taskItem }) => {
         'Casos Suporte': 'bg-[#3C4F85]',
         'Atualização PPPoE': 'bg-[#626672]',
         'O.S Aprimorar': 'bg-[#6A5943]',
-        'O.S Global': 'bg-[#844A19]',
+        'Não Atendido': 'bg-[#844A19]',
         'O.S Reagendamento': 'bg-[#470A64]',
         'O.S Escallo': 'bg-[#640A4B]',
         'Não Solucionado': 'bg-[#640A23]',
-        'Concluidos': 'bg-[#22640A]',
+        'Solucionado': 'bg-[#22640A]',
     };
     const STATUS_COLORS = {
         'A fazer': 'bg-[#83FF57]',

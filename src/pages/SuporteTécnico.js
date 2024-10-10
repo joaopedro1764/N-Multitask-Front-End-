@@ -9,9 +9,18 @@ import { ColumnCard } from '../componentes/kanban/ColumnCard/ColumnCard';
 import { useWebSocketContext } from '../hooks/useWebSocketProvider';
 import { useWebSocketPingPong } from '../hooks/useWebSocketPingPong';
 import { ModalRegisterTask } from '../componentes/Modal/ModalRegisterTask';
+import Cookies from 'js-cookie';
 
 
 export const SuporteTecnico = () => {
+
+    let user;
+    const userCookieString = Cookies.get('userAuth');
+
+    if (userCookieString) {
+        let userCookie = JSON.parse(userCookieString);
+        user = userCookie;
+    }
 
     const { isConnected, message, sendMessage } = useWebSocketContext();
     useWebSocketPingPong(sendMessage)
@@ -36,21 +45,24 @@ export const SuporteTecnico = () => {
         const sourceDroppableId = parseInt(re.source.droppableId);
         const columnNoCompleted = boardData.length - 1;
         const columnCompleted = boardData.length - 2;
+        const unanswered = boardData.length - 3;
 
         let newBoardData = [...boardData];
         var dragItem = newBoardData[sourceDroppableId].items[re.source.index];
 
-        if (destinationDroppableId === columnCompleted && sourceDroppableId === columnNoCompleted) {
-            return;
-        } else if (destinationDroppableId === columnNoCompleted && sourceDroppableId === columnCompleted) {
+        console.log(dragItem)
+
+        if (destinationDroppableId === columnNoCompleted && sourceDroppableId !== unanswered) {
             return;
         }
 
         if (destinationDroppableId === columnCompleted) {
-            dragItem.status = "Concluidos"
+            dragItem.status = "Solucionado"
         }
         else if (destinationDroppableId === columnNoCompleted) {
             dragItem.status = "Não Solucionado"
+        } else if (destinationDroppableId === unanswered) {
+            dragItem.status = "Não Atendido"
         } else {
             return;
         }

@@ -12,10 +12,6 @@
         "items": []
     },
     {
-        "name": "O.S Global",
-        "items": []
-    },
-    {
         "name": "O.S Escallo",
         "items": []
     },
@@ -24,7 +20,11 @@
         "items": []
     },
     {
-        "name": "Concluidos",
+        "name": "Não Atendido",
+        "items": []
+    },
+    {
+        "name": "Solucionado",
         "items": []
     },
     {

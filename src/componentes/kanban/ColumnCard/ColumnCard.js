@@ -10,22 +10,22 @@ export const ColumnCard = ({ task, index }) => {
         'Casos Suporte': 'bg-[#30384F]',
         'Atualização PPPoE': 'bg-[#42454F]',
         'O.S Aprimorar': 'bg-[#362F26]',
-        'O.S Global': 'bg-[#2E2319]',
+        'Não Atendido': 'bg-[#2E2319]',
         'O.S Reagendamento': 'bg-[#221628]',
         'O.S Escallo': 'bg-[#281623]',
         'Não Solucionado': 'bg-[#32162C]',
-        'Concluidos': 'bg-[#173A22]',
+        'Solucionado': 'bg-[#173A22]',
     };
 
     const TITLE_COLORS = {
         'Casos Suporte': 'bg-[#3C4F85]',
         'Atualização PPPoE': 'bg-[#626672]',
         'O.S Aprimorar': 'bg-[#6A5943]',
-        'O.S Global': 'bg-[#844A19]',
+        'Não Atendido': 'bg-[#844A19]',
         'O.S Reagendamento': 'bg-[#470A64]',
         'O.S Escallo': 'bg-[#640A4B]',
         'Não Solucionado': 'bg-[#640A23]',
-        'Concluidos': 'bg-[#22640A]',
+        'Solucionado': 'bg-[#22640A]',
     };
 
     const getColumnColor = (task) => COLUMNS_COLORS[task.name];
@@ -37,35 +37,49 @@ export const ColumnCard = ({ task, index }) => {
     const [open, setOpen] = useState(false)
 
     return (
-        <>        <Droppable droppableId={index.toString()}>
-            {(provided) => (
-                <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                >
-                    <div className={`overflow-y-auto rounded-md ${columnColor} min-w-[300px] max-h-[calc(100%-20px)] scrollbar-column p-2`}>
-                        <div className={`w-full flex justify-between gap-4 items-center text-white px-2 py-1.5 sticky top-0 rounded-sm ${colorTitle}`}>
-                            <div className="flex items-center gap-3">
-                                <span className="w-2 h-2 bg-white rounded-full" />
-                                <span className="text-balance ">{task.name}</span>
+        <>
+            <Droppable droppableId={index.toString()}>
+                {(provided) => (
+                    <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                    >
+                        <div className={`overflow-y-auto rounded-md ${columnColor} min-w-[300px] max-h-[calc(100%-20px)] scrollbar-column p-2`}>
+                            <div className={`w-full flex justify-between gap-4 items-center text-white px-2 py-1.5 sticky top-0 rounded-md ${colorTitle} z-10`}>
+                                <div className="flex items-center gap-3">
+                                    <span className="w-2 h-2 bg-white rounded-full" />
+                                    <span className="text-balance font-saira-medium">{task.name}</span>
+                                </div>
+                                <span className="font-saira-medium text-white">{task.items?.length}</span>
                             </div>
-                            <span className="font-semibold text-white">{task.items?.length}</span>
+
+                           
+                                {task.items.length > 0 &&
+                                    task.items.map((taskItem, taskID) => (
+                                        <CardItem
+                                            key={taskItem.id}
+                                            task={task}
+                                            taskItem={taskItem}
+                                            index={taskID}
+                                        />
+                                    ))
+                                }
+                                {provided.placeholder}
+                           
+
+                            {task.name === "Não Atendido" || task.name === "Solucionado" || task.name === "Não Solucionado" ? "" :
+                                <button
+                                    onClick={() => { setValue(task.name); setOpen(true) }}
+                                    className={`${colorTitle} mt-2 px-3 py-1 rounded-md text-sm font-saira-medium text-white flex gap-1 items-center`}
+                                >
+                                    <AddIcon />Novo Card
+                                </button>
+                            }
                         </div>
-                        {task.items.length > 0 &&
-                            task.items.map((taskItem, taskID) => (
-                                <CardItem
-                                    key={taskItem.id}
-                                    task={task}
-                                    taskItem={taskItem}
-                                    index={taskID}
-                                />
-                            ))}
-                        {provided.placeholder}
-                        <button onClick={() => { setValue(task.name); setOpen(true) }} className={`${colorTitle} mt-2 px-3 py-1 rounded-md text-sm font-medium text-white flex gap-1 items-center`}><AddIcon />Novo Card</button>
+
                     </div>
-                </div>
-            )}
-        </Droppable>
+                )}
+            </Droppable>
             <ModalRegisterTask open={open} setOpen={setOpen} value={value} />
         </>
 

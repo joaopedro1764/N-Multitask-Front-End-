@@ -11,15 +11,13 @@ import Data from "../../utils/data.json"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ImPencil2 } from "react-icons/im";
+import { DropDownUser } from './DropDownUser';
 
 export const ModalRegisterTask = ({ open, setOpen, value }) => {
 
-    console.log("oi");
-
-
     const { users } = useGetUser();
-    const [isOpen, setIsOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState({ name: "", profile_image: "" });
+    const [isOpen, setIsOpen] = useState(false);
     const { sendMessage } = useWebSocketContext();
     const userCookieString = Cookies.get('userAuth');
     const itemsPriority = [
@@ -84,18 +82,10 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
         clearForm();
     }
 
-    const toggleDropdown = () => setIsOpen(!isOpen);
-
-    const selectUser = (user) => {
-        setSelectedUser({ name: user.name, profile_image: user.profile_image });
-        setIsOpen(false);
-    };
-
     const clearForm = () => {
         setIsOpen(false);
         setSelectedUser({ user: "", profile_image: "" });
         reset();
-
     };
 
     const BORDER_COLOR = {
@@ -105,7 +95,6 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
     };
 
     const taskPriority = watch('task.priority');
-
     const border = BORDER_COLOR[taskPriority] || 'border-l-[#FFDD63]';
 
 
@@ -124,27 +113,56 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
         }
     }, [open, value, reset]);
 
+
+    var icon = <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        width="60"
+        height="60"
+        fill="none"
+        viewBox="0 0 60 60"
+    >
+        <path fill="url(#pattern0_1186_8413)" d="M0 0H60V60H0z"></path>
+        <defs>
+            <pattern
+                id="pattern0_1186_8413"
+                width="1"
+                height="1"
+                patternContentUnits="objectBoundingBox"
+            >
+                <use transform="scale(.01)" xlinkHref="#image0_1186_8413"></use>
+            </pattern>
+            <image
+                id="image0_1186_8413"
+                width="100"
+                height="100"
+                xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFk0lEQVR4nO2dTYgcRRSAKxJFUTARUURMQFRk1cS1q2ZX3N2q6t1VFARFV1CEjTuvak2MkQQEf9mDmoMKojmIoqAHcVEvXoyS4CGJIktE0ZOiIPFgokYCRvEvUd7MtG7Wqf6ZnZmu7n4f9K27p+p9Uz9dr3qGMYIgCIIgCIIgCIIgCIIgCILwFiHhSqHhXqHNE0LbR2uhnRoZ2bg673JVDi7NBNfmE6HN3/87lPmdK/Pcejm9Ku9yVgKuzYNCwbG2MhYdXMOXYhwuybu8pYYr81iSiBOkKDgkNFyWd7lLCc8og6R4KENQS+k+ojGDig34ca7MHqHNgYQx5btA2kt7UMTqIBJkcA1/4lQXz103eefpXMNukpJTN8WV+SvQcPvia4aHt54mNOyi7ssDGREkxSMZESTFIxkRJMUjGREkxSMZESTFIxkRJMUjGREkxSMZESTFIxkRJMUjGREkJYMMoe0drA9UXopPMljVpfgoo7JSfJZROSlZ8hl5g1LS5FMKu3GiSDIySVHmi8JtMSpCN7Wc7kso8wwrCkVsGZlbioLfggl7JvOdMshIKyWQcCvzmTLJiGhunDDfOmZdDzFfKaOMCKFhr6NOjzMf4crcFzsANvvcD4S0nBUMoeE23PflmJhsYr4RBPZkrszhRCH/HZ+LEG5mjK1gnoNjBLZs5xgyZq9gvjEU1tdlkLG4ue8ORu15rKAyuDb7mY/gMnknQkRrKSII7VWsYDLwVYhaaDUr6L7bBCnmML4FxYoio3HYB5ivCAVvL0eIaB4Hhq+tn5V3XbgytwgNf8RPTsyTzGeEgq9cBa+FMMoV3CMUvJP0xhNX8Jr3LUPBdub7Q5Mr0Dys37j4XC5nLm9Mfd0VPh6E9Voe9SiFDISPG+H8xo/fdeHS8wempk4R2rwZM/Pa2e86lEYGIiRsaF8J+JnNzZ3U7hopp0/lCj51zV6CCbumX+UvlQyEa3jaUYmFuOuEtmN5z2BwGadUMhCuzbuOiryc4tr9jta1qx8to/CzqXa4VkGFgm1J1woF2xyBOIrdWq/KXMqWgWAKM6ZC1y1nQiCUOYpLK7i8Pahn1narzKWVgQSqfo2rUsPh7PlJ10s5t5Ir+DE2OK2Bnit4ryZheDnlLbUMJFBm1jF1/SntPbg2LyUKOfGY7+SHZUovAxEKdjgG5b1p7zGoZ9aiwExSlPkmy4JkJWQgXMH7bVuIMs9nuU8Q1iezSsHzhzQESfeujAxEaPN9uwoGodmc9V7BhF3DlXkx1Zjyr3g4FJdPqZSMobB+rquSgayrTu8r5dxKTPMG2mzFh8sULWV3u8xjpWQgNQ2hW4g9u2ufE8Ko80fKoqOZDq6uDEQou8Uxfhzs9mfJ5trXG+4Aw2eVloFgfx/ThXSdAVwljlu6l5ZXVgbiCg7X8GyvPpM38yntcy8KPqysDBxEhYIjjkov9HK/K9ewM+0srCoyGB/dcEF8AOCjXkkJQrOZZCwNiq7fkOIb+XEvNi1wZWTGlvEUKztcw/3pAtK1lrIC08GYo8ccBXVTS4Uo82qGoGRqKSMjG1cH0o609gq/ILTZh+ngDrqp8reM5Exfeinr5fSqRuA1WJyZYZaw+UJlBwN2lWXgxgWh4JcOgrSAgW8mnczBrgS+arOpdgyNzV7cs2BqahmZqUl7U+6B1232Biu7hVURoeGRHFvAMaHM1429xAq24657fBUCV4hZVREaXu/Lt143Elb7WuOOxQnAgNx0Rt719w58tuhu8OGHRuZRwQ7M0WPgC/dCfp4IDW912N0caSwA4ioxLt0rO3715N3n5F2fwhMoO4T/XhPT1fyKzylcwyv4RM9Dc30/9+pWktYGt/lWinVeKPMwZu0GZf0i1wZrgiAIgiAIgiAIgiAIgiAIgiAIgiBYvvwD+pAQToL9VPQAAAAASUVORK5CYII="
+            ></image>
+        </defs>
+    </svg>
+
+
     return (
 
-        <Dialog open={open} as="div" className="relative font-saira-medium z-10 focus:outline-none flex justify-center items-center"
+        <Dialog open={open} as="div" className="relative  z-10 focus:outline-none flex justify-center items-center"
             onClose={() => { setOpen(false); clearForm() }}>
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                 <div className="flex min-h-full items-center justify-center">
                     <DialogPanel
                         transition
-                        className={`max-w-[800px] relative bg-white rounded-xl p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border-l-[46px] ${border}`}
+                        className={`max-w-[800px] relative shadow-2xl bg-white rounded-xl p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border-l-[46px] ${border}`}
                     >
                         <CloseIcon className="absolute right-3 !w-10 !h-10 top-3 cursor-pointer" onClick={() => { setOpen(false); clearForm(); }} />
 
-                        <h1 class="flex items-center font-saira-bold text-5xl gap-x-5 mt-4 text-blue-fit">Tarefa <ImPencil2 className='!w-8 "h-8' /> </h1>
+                        <h1 class="flex items-center font-saira-bold text-5xl gap-x-2 mt-4 text-blue-fit">Tarefa {icon} </h1>
 
                         <form onSubmit={handleSubmit(registerTask)} className="grid grid-cols-2 grid-rows-4 w-full h-full">
                             <div className="w-full flex flex-col">
-                                <p className="flex font-saira-medium font-bold text-blue-fit mt-6">Defina como prioridade:</p>
+                                <p className="flex  font-bold text-blue-fit mt-6">Defina a prioridade:</p>
                                 <div class="flex gap-x-3 mt-3 ">
                                     {itemsPriority.map(item => (
                                         <div className="flex items-center gap-x-2" key={item.value}>
-                                            <label htmlFor={item.value} className="cursor-pointer font-saira-medium font-bold">
+                                            <label htmlFor={item.value} className="cursor-pointer font-bold">
                                                 {item.label}
                                             </label>
                                             <input
@@ -163,11 +181,11 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                             </div>
                             <div class="w-full flex gap-x-5 col-span-2 mt-2">
                                 <div className="flex flex-col">
-                                    <label class="tracking-wide font-saira-medium font-bold mb-2 text-blue-fit" htmlFor="client">
+                                    <label class="tracking-wide font-bold mb-2 text-blue-fit" htmlFor="client">
                                         Defina o cliente:
                                     </label>
                                     <input
-                                        class="w-64 bg-gray text-gray border-2 border-black rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 "
+                                        class="w-64 border-2 border-black rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 "
                                         id="client"
                                         type="text"
                                         placeholder="12345 - O.S Sem Conexão"
@@ -178,13 +196,14 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                                     )}
                                 </div>
                                 <div className="w-full flex flex-col">
-                                    <label class="tracking-wide font-saira-medium font-bold mb-2 text-blue-fit" htmlFor="date" type="text" placeholder="date">
+                                    <label class="tracking-wide mb-2 text-blue-fit font-bold" htmlFor="date" type="text" placeholder="date">
                                         Data de entrega:
                                     </label>
                                     <input
                                         id='date'
                                         min={moment().format("YYYY-MM-DD")}
-                                        class="w-64 bg-gray text-gray border-2 border-black rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 "
+                                        max={moment().add(14, 'days').format("YYYY-MM-DD")}
+                                        class="w-64 border-2 border-black rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white placeholder:text-red-500"
                                         type="date"
                                         placeholder="date"
                                         {...register("task.date")}
@@ -196,11 +215,11 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                             </div>
                             <div class="w-full flex gap-x-5 mt-2">
                                 <div class="flex flex-col">
-                                    <label htmlFor="subject" class="tracking-wide font-saira-medium font-bold mb-2 text-blue-fit" placeholder="selecione">Defina o assunto:</label>
+                                    <label htmlFor="subject" class="tracking-wide font-bold mb-2 text-blue-fit" placeholder="selecione">Defina o assunto:</label>
                                     <select
                                         id='subject'
                                         {...register("task.subject")}
-                                        class="w-64 bg-gray text-gray border-2 border-black cursor-pointer rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ">
+                                        class="w-64 border-2 border-black cursor-pointer rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ">
                                         <option value="" disabled selected hidden>Assunto</option>
                                         {Data.map((subject, index) => (
                                             <option key={index} value={subject.name}>{subject.name}</option>
@@ -212,58 +231,17 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                                     )}
                                 </div>
                                 <div className="flex flex-col">
-                                    <label class="tracking-wide font-saira-medium font-bold mb-2 text-blue-fit" htmlFor="comment">
+                                    <label class="tracking-wide mb-2 text-blue-fit font-bold" htmlFor="comment">
                                         Defina o colaborador: (opcional)
                                     </label>
-                                    <div className="relative w-64">
-                                        <button
-                                            type='button'
-                                            onClick={toggleDropdown}
-                                            className="w-64 bg-gray text-gray border-2 border-black rounded-lg py-[15px]
-                                             px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 flex items-center justify-between gap-x-3">
-
-                                            {selectedUser && selectedUser.name ? (
-                                                <div className='flex gap-x-3 items-center'>
-                                                    <img
-                                                        className="w-8 rounded-full object-cover"
-                                                        alt="Foto usuário"
-                                                        src={`https://nmt.nmultifibra.com.br/notion/ws${selectedUser.profile_image}`}
-                                                    />
-                                                    <span>{selectedUser.name}</span>
-                                                </div>
-                                            ) : (
-                                                <span>Colaborador</span>
-                                            )}
-                                            <svg className="h-5 w-5 inline-block float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 10l5 5 5-5H7z" />
-                                            </svg>
-                                        </button>
-                                        {isOpen && (
-                                            <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 overflow-y-auto max-h-[150px]">
-                                                {users.map((user) => (
-                                                    <div
-                                                        key={user.id}
-                                                        onClick={() => selectUser(user)}
-                                                        className="flex items-center px-4 py-2 hover:bg-blue-100 cursor-pointer"
-                                                    >
-                                                        <img
-                                                            src={"https://nmt.nmultifibra.com.br/notion/ws" + user.profile_image}
-                                                            alt={user.name}
-                                                            className="h-8 w-8 rounded-full mr-2"
-                                                        />
-                                                        {user.name}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
+                                    <DropDownUser users={users} setIsOpen={setIsOpen} isOpen={isOpen} setSelectedUser={setSelectedUser} selectedUser={selectedUser} />
                                     {errors.task?.collaborator?.message && (
                                         <p className='text-red-600 text-sm mt-1'>{errors.task.collaborator?.message}</p>
                                     )}
                                 </div>
                             </div>
                             <div className="col-span-2 mt-2">
-                                <label class="tracking-wide font-saira-medium font-bold mb-3 text-blue-fit" htmlFor="comment">
+                                <label class="tracking-wide font-bold mb-3 text-blue-fit" htmlFor="comment">
                                     Defina um comentario: (opcional)
                                 </label>
                                 <textarea
