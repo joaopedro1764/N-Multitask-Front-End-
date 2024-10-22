@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useGetUser } from "../../hooks/useUser";
 
-export const DropDownUser = ({ isOpen, setIsOpen, selectedUser, setSelectedUser }) => {
+export const DropDownUser = ({ isOpen, setIsOpen, selectedUser, setSelectedUser, isUser }) => {
 
     const { users } = useGetUser();
 
@@ -14,11 +14,6 @@ export const DropDownUser = ({ isOpen, setIsOpen, selectedUser, setSelectedUser 
         setIsOpen(false);
     };
 
-    /*     const clearForm = () => {
-            setIsOpen(false);
-            setSelectedUser({ user: "", profile_image: "" });
-            reset(); 
-        }; */
 
     useEffect(() => {
         const handleClickOutside = (event) => {

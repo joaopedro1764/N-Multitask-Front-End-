@@ -14,7 +14,10 @@ import { ImPencil2 } from "react-icons/im";
 import { DropDownUser } from './DropDownUser';
 import { useGetMatters } from '../../hooks/useMatters';
 
-export const ModalRegisterTask = ({ open, setOpen, value }) => {
+export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
+
+    console.log(taskItem);
+    
 
     const { users } = useGetUser();
     const { matters } = useGetMatters()
@@ -27,7 +30,7 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
         { value: 'importante', label: 'Importante' },
         { value: 'critico', label: 'Crítico' }
 
-    ];
+    ];    
     let user;
 
     if (userCookieString) {
@@ -48,27 +51,16 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
         })
     })
 
-    const { register, handleSubmit, reset, watch, formState: { errors } } = useForm({
+    const { register, handleSubmit, reset,  formState: { errors } } = useForm({
         criteriaMode: 'all',
         mode: 'onBlur',
         resolver: zodResolver(schemaForms),
-        defaultValues: {
-            task: {
-                "priority": "normal",
-                "client": "",
-                "date": "",
-                "subject": value !== "" ? value : "",
-                "collaborator": "",
-                "comment": ""
-            }
-        }
     })
 
-    const registerTask = async (data) => {
+    const updateTask = async (data) => {
         const message = JSON.stringify({
             type: 'custom_action', action: "addCard",
             input: {
-                priority: taskPriority,
                 status: data.task.subject,
                 pageId: 'tasksSupport',
                 team: "Suporte",
@@ -97,24 +89,7 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
         "critico": "border-l-[#FF5F49]"
     };
 
-    const taskPriority = watch('task.priority');
-    const border = BORDER_COLOR[taskPriority] || 'border-l-[#FFDD63]';
-
-
-    useEffect(() => {
-        if (value !== "" && open) {
-            reset({
-                task: {
-                    priority: "normal",
-                    client: "",
-                    date: "",
-                    subject: value !== "" ? value : "",
-                    collaborator: "",
-                    comment: ""
-                }
-            });
-        }
-    }, [open, value, reset]);
+    const border = BORDER_COLOR[taskItem.priority] || 'border-l-[#FFDD63]';
 
 
     var icon = <svg
@@ -145,6 +120,24 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
     </svg>
 
 
+useEffect(() => {
+    if (taskItem !== "" && open) {
+        reset({
+            task: {
+                priority: taskItem.priority,
+                client: taskItem.title,
+                date: taskItem.todo_time,
+                subject: taskItem.status,
+                collaborator: taskItem.assignee,
+                comment: taskItem.comment
+            }
+        });
+    }
+}, [open]); 
+
+
+
+
     return (
 
         <Dialog open={open} as="div" className="relative  z-10 focus:outline-none flex justify-center items-center"
@@ -157,9 +150,9 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                     >
                         <CloseIcon className="absolute right-3 !w-10 !h-10 top-3 cursor-pointer" onClick={() => { setOpen(false); clearForm(); }} />
 
-                        <h1 class="flex items-center font-saira-bold text-5xl gap-x-2 mt-4 text-blue-fit">Tarefa {icon} </h1>
+                        <h1 class="flex items-center font-saira-bold text-5xl gap-x-2 mt-4 text-blue-fit">Alterar Tarefa {icon} </h1>
 
-                        <form onSubmit={handleSubmit(registerTask)} className="grid grid-cols-2 grid-rows-4 w-full h-full">
+                        <form onSubmit={handleSubmit(updateTask)} className="grid grid-cols-2 grid-rows-4 w-full h-full">
                             <div className="w-full flex flex-col">
                                 <p className="flex  font-bold text-blue-fit mt-6">Defina a prioridade:</p>
                                 <div class="flex gap-x-3 mt-3 ">
@@ -169,10 +162,11 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                                                 {item.label}
                                             </label>
                                             <input
+                                            
                                                 {...register("task.priority")}
                                                 id={item.value}
                                                 type="radio"
-                                                value={item.value}
+                                                value={taskItem.priority}
                                             />
 
                                         </div>
@@ -237,7 +231,7 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                                     <label class="tracking-wide mb-2 text-blue-fit font-bold" htmlFor="comment">
                                         Defina o colaborador: (opcional)
                                     </label>
-                                    <DropDownUser users={users} setIsOpen={setIsOpen} isOpen={isOpen} setSelectedUser={setSelectedUser} selectedUser={selectedUser} />
+                                    <DropDownUser users={users} setIsOpen={setIsOpen} isOpen={isOpen} setSelectedUser={setSelectedUser} selectedUser={selectedUser} isUser={taskItem.assignee}/>
                                     {errors.task?.collaborator?.message && (
                                         <p className='text-red-600 text-sm mt-1'>{errors.task.collaborator?.message}</p>
                                     )}
@@ -256,7 +250,7 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                                 />
                             </div>
                             <div class="flex justify-start gap-x-4 mt-6">
-                                <button type="submit" class="min-w-44 text-white bg-[#182B60] px-3 py-2.5 rounded-lg">Cadastrar</button>
+                                <button type="submit" class="min-w-44 text-white bg-[#182B60] px-3 py-2.5 rounded-lg">Alterar</button>
                             </div>
                         </form>
 

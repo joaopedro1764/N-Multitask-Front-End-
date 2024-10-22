@@ -7,12 +7,16 @@ import { useState } from 'react';
 import { useWebSocketContext } from '../../../hooks/useWebSocketProvider';
 import Cookies from 'js-cookie';
 import { showToast } from '../../Notification/Notification';
+import { ModalUpdateTask } from '../../Modal/ModalUpdateTask';
+import { set } from 'react-hook-form';
 export const CardItem = ({ task, index, taskItem }) => {
 
 
     const userCookieString = Cookies.get('userAuth');
     const { sendMessage } = useWebSocketContext()
     const [commentValue, setCommentValue] = useState("")
+    const [open, setOpen] = useState(false);
+    const [taskValue, setTaskValue] = useState({})
     let comment = JSON.parse(taskItem.description);
     let nameUser;
 
@@ -105,6 +109,7 @@ export const CardItem = ({ task, index, taskItem }) => {
             <Draggable key={taskItem.id} index={index} draggableId={taskItem.id.toString()}>
                 {(provided, snapshot) => (
                     <div
+                        onClick={() => { setOpen(true); setTaskValue(taskItem) }}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -138,12 +143,12 @@ export const CardItem = ({ task, index, taskItem }) => {
                                 className='w-full h-auto mt-2 px-4 py-3 focus:outline-none rounded-md placeholder:text-gray-500 placeholder:font-bold resize-none'
                                 placeholder='Digite seu comentário...'
                             />
-                          
+
                         </div>
                     </div>
                 )}
             </Draggable>
-
+            <ModalUpdateTask open={open} setOpen={setOpen} taskItem={taskValue} />
         </>
     );
 };

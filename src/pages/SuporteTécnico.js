@@ -10,6 +10,7 @@ import { useWebSocketContext } from '../hooks/useWebSocketProvider';
 import { useWebSocketPingPong } from '../hooks/useWebSocketPingPong';
 import { ModalRegisterTask } from '../componentes/Modal/ModalRegisterTask';
 import Cookies from 'js-cookie';
+import { useGetMatters } from '../hooks/useMatters';
 
 
 export const SuporteTecnico = () => {
@@ -28,6 +29,7 @@ export const SuporteTecnico = () => {
     const [boardData] = useState(Data);
     const [dataCard, setDataCard] = useState([]);
     const [openModal, setOpenModal] = useState(false);
+    const {matters} = useGetMatters()
 
     useEffect(() => {
         if (isConnected && message) {
@@ -43,14 +45,14 @@ export const SuporteTecnico = () => {
         if (!re.destination) return;
         const destinationDroppableId = parseInt(re.destination.droppableId);
         const sourceDroppableId = parseInt(re.source.droppableId);
-        const columnNoCompleted = boardData.length - 1;
-        const columnCompleted = boardData.length - 2;
-        const unanswered = boardData.length - 3;
+        const columnNoCompleted = matters.length - 1;
+        const columnCompleted = matters.length - 2;
+        const unanswered = matters.length - 3;
 
-        let newBoardData = [...boardData];
+        let newBoardData = [...matters];
         var dragItem = newBoardData[sourceDroppableId].items[re.source.index];
 
-        console.log(dragItem)
+      
 
         if (destinationDroppableId === columnNoCompleted && sourceDroppableId !== unanswered) {
             return;
@@ -134,7 +136,7 @@ export const SuporteTecnico = () => {
                     </div>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <div className="flex w-full space-x-5 mt-6 overflow-x-auto overflow-y-hidden h-full scrollbar-kanban">
-                            {boardData.map((data, index) => {
+                            {matters.map((data, index) => {
                                 data.items = dataCard.filter(element => element.status === data.name);
 
                                 return (
