@@ -4,20 +4,14 @@ import { useForm } from "react-hook-form"
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from "react";
 import { useWebSocketContext } from "../../hooks/useWebSocketProvider";
-import BorderColorSharpIcon from '@mui/icons-material/BorderColorSharp';
 import moment from "moment";
 import { useGetUser } from '../../hooks/useUser';
-import Data from "../../utils/data.json"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { ImPencil2 } from "react-icons/im";
 import { DropDownUser } from './DropDownUser';
 import { useGetMatters } from '../../hooks/useMatters';
 
 export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
-
-    console.log(taskItem);
-    
 
     const { users } = useGetUser();
     const { matters } = useGetMatters()
@@ -30,7 +24,8 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
         { value: 'importante', label: 'Importante' },
         { value: 'critico', label: 'Crítico' }
 
-    ];    
+    ];
+
     let user;
 
     if (userCookieString) {
@@ -47,15 +42,17 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
             "date": z.string().min(1, "Por favor, selecione uma data."),
             "subject": z.string().min(1, "Por favor, selecione um assunto válido."),
             "collaborator": z.string().nullable(),
-            "comment": z.string().nullable()
+            "comment": z.string().min(3, "Por favor, digite um comentário desta ação.")
         })
     })
 
-    const { register, handleSubmit, reset,  formState: { errors } } = useForm({
+    const { register, handleSubmit, reset, watch, formState: { errors } } = useForm({
         criteriaMode: 'all',
         mode: 'onBlur',
         resolver: zodResolver(schemaForms),
     })
+
+    const taskPriority = watch('task.priority');
 
     const updateTask = async (data) => {
         const message = JSON.stringify({
@@ -89,7 +86,7 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
         "critico": "border-l-[#FF5F49]"
     };
 
-    const border = BORDER_COLOR[taskItem.priority] || 'border-l-[#FFDD63]';
+    const border = BORDER_COLOR[taskPriority] || 'border-l-[#FFDD63]';
 
 
     var icon = <svg
@@ -120,23 +117,29 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
     </svg>
 
 
-useEffect(() => {
-    if (taskItem !== "" && open) {
-        reset({
-            task: {
-                priority: taskItem.priority,
-                client: taskItem.title,
-                date: taskItem.todo_time,
-                subject: taskItem.status,
-                collaborator: taskItem.assignee,
-                comment: taskItem.comment
-            }
-        });
+    useEffect(() => {
+        if (taskItem !== "" && open) {
+            reset({
+                task: {
+                    priority: taskItem.priority,
+                    client: taskItem.title,
+                    date: taskItem.todo_time,
+                    subject: taskItem.status,
+                    collaborator: taskItem.assignee,
+                    comment: taskItem.comment
+                }
+            });
+        }
+    }, [open]);
+
+
+    const userSelect = {
+        name: taskItem.assignee,
+        user_img: taskItem.user_img
     }
-}, [open]); 
 
-
-
+    console.log(errors);
+    
 
     return (
 
@@ -162,17 +165,17 @@ useEffect(() => {
                                                 {item.label}
                                             </label>
                                             <input
-                                            
                                                 {...register("task.priority")}
                                                 id={item.value}
                                                 type="radio"
-                                                value={taskItem.priority}
+                                                value={item.value}
+                                                defaultChecked={taskItem.priority === item.value}
                                             />
 
                                         </div>
                                     ))}
                                 </div>
-                                {errors.task?.priority?.message && (
+                                {errors?.task?.priority?.message && (
                                     <p className='text-red-600 text-sm mt-1'>{errors.task.priority?.message}</p>
                                 )}
                             </div>
@@ -188,7 +191,7 @@ useEffect(() => {
                                         placeholder="12345 - O.S Sem Conexão"
                                         {...register("task.client")}
                                     />
-                                    {errors.task?.client?.message && (
+                                    {errors?.task?.client?.message && (
                                         <p className='text-red-600 text-sm mt-1'>{errors.task.client?.message}</p>
                                     )}
                                 </div>
@@ -231,7 +234,7 @@ useEffect(() => {
                                     <label class="tracking-wide mb-2 text-blue-fit font-bold" htmlFor="comment">
                                         Defina o colaborador: (opcional)
                                     </label>
-                                    <DropDownUser users={users} setIsOpen={setIsOpen} isOpen={isOpen} setSelectedUser={setSelectedUser} selectedUser={selectedUser} isUser={taskItem.assignee}/>
+                                    <DropDownUser users={users} setIsOpen={setIsOpen} isOpen={isOpen} setSelectedUser={setSelectedUser} selectedUser={selectedUser} userSelect={userSelect} />
                                     {errors.task?.collaborator?.message && (
                                         <p className='text-red-600 text-sm mt-1'>{errors.task.collaborator?.message}</p>
                                     )}
@@ -248,6 +251,9 @@ useEffect(() => {
                                     placeholder="Escreva um comentario"
                                     {...register("task.comment")}
                                 />
+                                {errors.task?.comment?.message && (
+                                        <p className='text-red-600 text-sm mt-1'>{errors.task.comment?.message}</p>
+                                    )}
                             </div>
                             <div class="flex justify-start gap-x-4 mt-6">
                                 <button type="submit" class="min-w-44 text-white bg-[#182B60] px-3 py-2.5 rounded-lg">Alterar</button>

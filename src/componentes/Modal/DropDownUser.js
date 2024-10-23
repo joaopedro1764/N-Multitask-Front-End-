@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
 import { useGetUser } from "../../hooks/useUser";
 
-export const DropDownUser = ({ isOpen, setIsOpen, selectedUser, setSelectedUser, isUser }) => {
+export const DropDownUser = ({ isOpen, setIsOpen, selectedUser, setSelectedUser, userSelect }) => {
+
+
 
     const { users } = useGetUser();
 
@@ -14,6 +16,15 @@ export const DropDownUser = ({ isOpen, setIsOpen, selectedUser, setSelectedUser,
         setIsOpen(false);
     };
 
+
+    useEffect(() => {
+        if (userSelect) {
+            const defaultUser = users.find(user => user.name === userSelect.name); 
+            if (defaultUser) {
+                setSelectedUser(defaultUser);
+            }
+        }
+    }, [users]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
