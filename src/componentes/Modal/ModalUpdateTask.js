@@ -55,20 +55,25 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
     const taskPriority = watch('task.priority');
 
     const updateTask = async (data) => {
+
+        const dataJson = {
+            priority: taskPriority,
+            status: data.task.subject,
+            pageId: 'tasksSupport',
+            team: "Suporte",
+            todo_time: data.task.date,
+            assignee: selectedUser.name,
+            title: data.task.client,
+            description: JSON.stringify([data.task.comment]),
+            created_by: user?.name,
+            user_img: selectedUser.profile_image
+        }
         const message = JSON.stringify({
-            type: 'custom_action', action: "addCard",
-            input: {
-                status: data.task.subject,
-                pageId: 'tasksSupport',
-                team: "Suporte",
-                todo_time: data.task.date,
-                assignee: selectedUser.name,
-                title: data.task.client,
-                description: JSON.stringify([data.task.comment]),
-                created_by: user?.name,
-                user_img: selectedUser.profile_image
-            }
+            type: 'custom_action',
+            action: 'updateCard',
+            input: dataJson
         });
+        console.log(JSON.parse(message))
         sendMessage(message);
         setOpen(false);
         clearForm();
@@ -138,8 +143,7 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
         user_img: taskItem.user_img
     }
 
-    console.log(errors);
-    
+
 
     return (
 
@@ -252,8 +256,8 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                                     {...register("task.comment")}
                                 />
                                 {errors.task?.comment?.message && (
-                                        <p className='text-red-600 text-sm mt-1'>{errors.task.comment?.message}</p>
-                                    )}
+                                    <p className='text-red-600 text-sm mt-1'>{errors.task.comment?.message}</p>
+                                )}
                             </div>
                             <div class="flex justify-start gap-x-4 mt-6">
                                 <button type="submit" class="min-w-44 text-white bg-[#182B60] px-3 py-2.5 rounded-lg">Alterar</button>

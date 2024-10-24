@@ -65,7 +65,9 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
     })
 
     const registerTask = async (data) => {
-        const message = JSON.stringify({
+        console.log(data);
+        
+         const message = JSON.stringify({
             type: 'custom_action', action: "addCard",
             input: {
                 priority: taskPriority,
@@ -78,9 +80,10 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                 description: JSON.stringify([data.task.comment]),
                 created_by: user?.name,
                 user_img: selectedUser.profile_image
+                
             }
         });
-        sendMessage(message);
+        sendMessage(message); 
         setOpen(false);
         clearForm();
     }
