@@ -55,25 +55,23 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
     const taskPriority = watch('task.priority');
 
     const updateTask = async (data) => {
-
-        const dataJson = {
-            priority: taskPriority,
-            status: data.task.subject,
-            pageId: 'tasksSupport',
-            team: "Suporte",
-            todo_time: data.task.date,
-            assignee: selectedUser.name,
-            title: data.task.client,
-            description: JSON.stringify([data.task.comment]),
-            created_by: user?.name,
-            user_img: selectedUser.profile_image
-        }
         const message = JSON.stringify({
             type: 'custom_action',
             action: 'updateCard',
-            input: dataJson
+            input: {
+                id: taskItem.id,
+                priority: taskPriority,
+                status: data.task.subject,
+                pageId: 'tasksSupport',
+                team: "Suporte",
+                todo_time: data.task.date,
+                assignee: selectedUser.name,
+                title: data.task.client,
+                description: JSON.stringify([data.task.comment]),
+                created_by: user.name,
+                user_img: selectedUser.profile_image
+            }
         });
-        console.log(JSON.parse(message))
         sendMessage(message);
         setOpen(false);
         clearForm();
@@ -92,7 +90,6 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
     };
 
     const border = BORDER_COLOR[taskPriority] || 'border-l-[#FFDD63]';
-
 
     var icon = <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -143,8 +140,6 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
         user_img: taskItem.user_img
     }
 
-
-
     return (
 
         <Dialog open={open} as="div" className="relative  z-10 focus:outline-none flex justify-center items-center"
@@ -157,12 +152,12 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                     >
                         <CloseIcon className="absolute right-3 !w-10 !h-10 top-3 cursor-pointer" onClick={() => { setOpen(false); clearForm(); }} />
 
-                        <h1 class="flex items-center font-saira-bold text-5xl gap-x-2 mt-4 text-blue-fit">Alterar Tarefa {icon} </h1>
+                        <h1 className="flex items-center font-saira-bold text-5xl gap-x-2 mt-4 text-blue-fit">Alterar Tarefa {icon} </h1>
 
                         <form onSubmit={handleSubmit(updateTask)} className="grid grid-cols-2 grid-rows-4 w-full h-full">
                             <div className="w-full flex flex-col">
                                 <p className="flex  font-bold text-blue-fit mt-6">Defina a prioridade:</p>
-                                <div class="flex gap-x-3 mt-3 ">
+                                <div className="flex gap-x-3 mt-3 ">
                                     {itemsPriority.map(item => (
                                         <div className="flex items-center gap-x-2" key={item.value}>
                                             <label htmlFor={item.value} className="cursor-pointer font-bold">
@@ -183,13 +178,13 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                                     <p className='text-red-600 text-sm mt-1'>{errors.task.priority?.message}</p>
                                 )}
                             </div>
-                            <div class="w-full flex gap-x-5 col-span-2 mt-2">
+                            <div className="w-full flex gap-x-5 col-span-2 mt-2">
                                 <div className="flex flex-col">
-                                    <label class="tracking-wide font-bold mb-2 text-blue-fit" htmlFor="client">
+                                    <label className="tracking-wide font-bold mb-2 text-blue-fit" htmlFor="client">
                                         Defina o cliente:
                                     </label>
                                     <input
-                                        class="w-64 border-2 border-black rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 "
+                                        className="w-64 border-2 border-black rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 "
                                         id="client"
                                         type="text"
                                         placeholder="12345 - O.S Sem Conexão"
@@ -200,14 +195,14 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                                     )}
                                 </div>
                                 <div className="w-full flex flex-col">
-                                    <label class="tracking-wide mb-2 text-blue-fit font-bold" htmlFor="date" type="text" placeholder="date">
+                                    <label className="tracking-wide mb-2 text-blue-fit font-bold" htmlFor="date" type="text" placeholder="date">
                                         Data de entrega:
                                     </label>
                                     <input
                                         id='date'
                                         min={moment().format("YYYY-MM-DD")}
                                         max={moment().add(14, 'days').format("YYYY-MM-DD")}
-                                        class="w-64 border-2 border-black rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white placeholder:text-red-500"
+                                        className="w-64 border-2 border-black rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white placeholder:text-red-500"
                                         type="date"
                                         placeholder="date"
                                         {...register("task.date")}
@@ -217,13 +212,13 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                                     )}
                                 </div>
                             </div>
-                            <div class="w-full flex gap-x-5 mt-2">
-                                <div class="flex flex-col">
-                                    <label htmlFor="subject" class="tracking-wide font-bold mb-2 text-blue-fit" placeholder="selecione">Defina o assunto:</label>
+                            <div className="w-full flex gap-x-5 mt-2">
+                                <div className="flex flex-col">
+                                    <label htmlFor="subject" className="tracking-wide font-bold mb-2 text-blue-fit" placeholder="selecione">Defina o assunto:</label>
                                     <select
                                         id='subject'
                                         {...register("task.subject")}
-                                        class="w-64 border-2 border-black cursor-pointer rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ">
+                                        className="w-64 border-2 border-black cursor-pointer rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ">
                                         <option value="" disabled selected hidden>Assunto</option>
                                         {matters.slice(0, -3).map((subject, index) => (
                                             <option key={index} value={subject.name}>{subject.name}</option>
@@ -235,7 +230,7 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                                     )}
                                 </div>
                                 <div className="flex flex-col">
-                                    <label class="tracking-wide mb-2 text-blue-fit font-bold" htmlFor="comment">
+                                    <label className="tracking-wide mb-2 text-blue-fit font-bold" htmlFor="comment">
                                         Defina o colaborador: (opcional)
                                     </label>
                                     <DropDownUser users={users} setIsOpen={setIsOpen} isOpen={isOpen} setSelectedUser={setSelectedUser} selectedUser={selectedUser} userSelect={userSelect} />
@@ -245,12 +240,12 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                                 </div>
                             </div>
                             <div className="col-span-2 mt-2">
-                                <label class="tracking-wide font-bold mb-3 text-blue-fit" htmlFor="comment">
+                                <label className="tracking-wide font-bold mb-3 text-blue-fit" htmlFor="comment">
                                     Defina um comentario: (opcional)
                                 </label>
                                 <textarea
                                     id='comment'
-                                    class="w-96 flex border-2 border-black rounded-lg py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white resize-none"
+                                    className="w-96 flex border-2 border-black rounded-lg py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white resize-none"
                                     type="text"
                                     placeholder="Escreva um comentario"
                                     {...register("task.comment")}
@@ -259,8 +254,8 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                                     <p className='text-red-600 text-sm mt-1'>{errors.task.comment?.message}</p>
                                 )}
                             </div>
-                            <div class="flex justify-start gap-x-4 mt-6">
-                                <button type="submit" class="min-w-44 text-white bg-[#182B60] px-3 py-2.5 rounded-lg">Alterar</button>
+                            <div className="flex justify-start gap-x-4 mt-6">
+                                <button type="submit" className="min-w-44 text-white bg-[#182B60] px-3 py-2.5 rounded-lg">Alterar</button>
                             </div>
                         </form>
 

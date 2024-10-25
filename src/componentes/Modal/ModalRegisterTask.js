@@ -4,13 +4,10 @@ import { useForm } from "react-hook-form"
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from "react";
 import { useWebSocketContext } from "../../hooks/useWebSocketProvider";
-import BorderColorSharpIcon from '@mui/icons-material/BorderColorSharp';
 import moment from "moment";
 import { useGetUser } from '../../hooks/useUser';
-import Data from "../../utils/data.json"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { ImPencil2 } from "react-icons/im";
 import { DropDownUser } from './DropDownUser';
 import { useGetMatters } from '../../hooks/useMatters';
 
@@ -65,9 +62,7 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
     })
 
     const registerTask = async (data) => {
-        console.log(data);
-        
-         const message = JSON.stringify({
+        const message = JSON.stringify({
             type: 'custom_action', action: "addCard",
             input: {
                 priority: taskPriority,
@@ -79,11 +74,13 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                 title: data.task.client,
                 description: JSON.stringify([data.task.comment]),
                 created_by: user?.name,
-                user_img: selectedUser.profile_image
-                
+                user_img: selectedUser.profile_image,
+                last_edited_time: '',
+                last_edited_by: '',
+                conclusion_timer: ''
             }
         });
-        sendMessage(message); 
+        sendMessage(message);
         setOpen(false);
         clearForm();
     }
@@ -102,7 +99,6 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
 
     const taskPriority = watch('task.priority');
     const border = BORDER_COLOR[taskPriority] || 'border-l-[#FFDD63]';
-
 
     useEffect(() => {
         if (value !== "" && open) {

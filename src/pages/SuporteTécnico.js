@@ -3,7 +3,6 @@ import PageviewIcon from '@mui/icons-material/Pageview';
 import AddIcon from '@mui/icons-material/Add';
 import { SideBar } from "../componentes/SideBar/SideBar"
 import { useEffect, useState } from 'react';
-import Data from '../utils/data.json'
 import { DragDropContext } from 'react-beautiful-dnd';
 import { ColumnCard } from '../componentes/kanban/ColumnCard/ColumnCard';
 import { useWebSocketContext } from '../hooks/useWebSocketProvider';
@@ -26,7 +25,6 @@ export const SuporteTecnico = () => {
     const { isConnected, message, sendMessage } = useWebSocketContext();
     useWebSocketPingPong(sendMessage)
     const [openSideBar, setOpenSideBar] = useState(true);
-    const [boardData] = useState(Data);
     const [dataCard, setDataCard] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const {matters} = useGetMatters()
