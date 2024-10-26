@@ -13,10 +13,14 @@ import { useGetMatters } from '../../hooks/useMatters';
 
 export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
 
+
+
+
     const { users } = useGetUser();
     const { matters } = useGetMatters()
     const [selectedUser, setSelectedUser] = useState({ name: "", profile_image: "" });
     const [isOpen, setIsOpen] = useState(false);
+    const [comentario, setComentario] = useState("")
     const { sendMessage } = useWebSocketContext();
     const userCookieString = Cookies.get('userAuth');
     const itemsPriority = [
@@ -55,6 +59,22 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
     const taskPriority = watch('task.priority');
 
     const updateTask = async (data) => {
+
+        let haveComments = taskItem.description;
+
+        if(haveComments){
+            haveComments = JSON.parse(haveComments);
+        }
+
+       let objComment = {
+            date: moment().format("DD/MM/YYYY: HH:mm"),
+            comment: data.task.comment,
+            user: user?.name
+        }; 
+
+        haveComments.push(objComment)
+        
+
         const message = JSON.stringify({
             type: 'custom_action',
             action: 'updateCard',
@@ -67,8 +87,8 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                 todo_time: data.task.date,
                 assignee: selectedUser.name,
                 title: data.task.client,
-                description: JSON.stringify([data.task.comment]),
-                created_by: user.name,
+                description: '',
+                created_by: user?.name,
                 user_img: selectedUser.profile_image
             }
         });
@@ -148,7 +168,7 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                 <div className="flex min-h-full items-center justify-center">
                     <DialogPanel
                         transition
-                        className={`max-w-[800px] relative shadow-2xl bg-white rounded-xl p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border-l-[46px] ${border}`}
+                        className={`max-w-[800px] relative shadow-2xl bg-white rounded-xl p-6 backdrop-blur-2xl duration-500 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border-l-[46px] ${border}`}
                     >
                         <CloseIcon className="absolute right-3 !w-10 !h-10 top-3 cursor-pointer" onClick={() => { setOpen(false); clearForm(); }} />
 

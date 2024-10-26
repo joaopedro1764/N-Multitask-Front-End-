@@ -62,8 +62,20 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
     })
 
     const registerTask = async (data) => {
+        const commentExists = (data.task.comment && data.task.comment.length > 0 && data.task.comment[0] !== "");
+
+        let objComment;
+        if (commentExists) {
+            objComment = {
+                date: moment().format("DD/MM/YYYY: HH:mm"),
+                comment: data.task.comment,
+                user: user?.name
+            };
+        }
+
         const message = JSON.stringify({
-            type: 'custom_action', action: "addCard",
+            type: 'custom_action',
+            action: "addCard",
             input: {
                 priority: taskPriority,
                 status: data.task.subject,
@@ -72,7 +84,7 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                 todo_time: data.task.date,
                 assignee: selectedUser.name,
                 title: data.task.client,
-                description: JSON.stringify([data.task.comment]),
+                description: commentExists ? JSON.stringify([objComment]) : JSON.stringify([]),
                 created_by: user?.name,
                 user_img: selectedUser.profile_image,
                 last_edited_time: '',
@@ -80,10 +92,12 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
                 conclusion_timer: ''
             }
         });
+
         sendMessage(message);
         setOpen(false);
         clearForm();
     }
+
 
     const clearForm = () => {
         setIsOpen(false);

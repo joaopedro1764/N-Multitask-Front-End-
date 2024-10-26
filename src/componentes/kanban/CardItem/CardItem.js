@@ -10,14 +10,20 @@ import { showToast } from '../../Notification/Notification';
 import { ModalUpdateTask } from '../../Modal/ModalUpdateTask';
 export const CardItem = ({ task, index, taskItem }) => {
 
-   
+
 
     const userCookieString = Cookies.get('userAuth');
     const { sendMessage } = useWebSocketContext()
     const [commentValue, setCommentValue] = useState("")
     const [open, setOpen] = useState(false);
     const [taskValue, setTaskValue] = useState({})
-    let comment = JSON.parse(taskItem.description);
+    let comment = taskItem.description;
+
+
+    if (comment) {
+        comment = JSON.parse(comment)
+    }
+
     let nameUser;
 
 
