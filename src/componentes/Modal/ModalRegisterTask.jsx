@@ -30,7 +30,7 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
     if (userCookieString) {
         let userCookie = JSON.parse(userCookieString);
         user = userCookie;
-    }
+    }    
 
     const schemaForms = z.object({
         task: z.object({
@@ -69,7 +69,7 @@ export const ModalRegisterTask = ({ open, setOpen, value }) => {
             objComment = {
                 date: moment().format("DD/MM/YYYY: HH:mm"),
                 comment: data.task.comment,
-                user: user?.name
+                user: user
             };
         }
 

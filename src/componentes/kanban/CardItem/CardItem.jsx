@@ -19,17 +19,19 @@ export const CardItem = ({ task, index, taskItem }) => {
     const [taskValue, setTaskValue] = useState({})
     let comment = taskItem.description;
 
-
-    if (comment) {
-        comment = JSON.parse(comment)
+    try {
+        comment = comment ? JSON.parse(comment) : null;
+    } catch (error) {
+        console.error("Erro ao fazer parse de taskItem.description:", error);
+        comment = [];
     }
 
-    let nameUser;
+    let user;
 
 
     if (userCookieString) {
         let userCookie = JSON.parse(userCookieString);
-        nameUser = userCookie.name;
+        user = userCookie;
     }
 
     const CARD_COLORS = {
@@ -84,7 +86,7 @@ export const CardItem = ({ task, index, taskItem }) => {
             event.preventDefault();
             if (commentValue?.trim()) {
                 let jsonComment = {
-                    user: nameUser,
+                    user: user,
                     date: moment().format("DD/MM/YYYY HH:mm"),
                     comment: commentValue
                 };
@@ -143,6 +145,7 @@ export const CardItem = ({ task, index, taskItem }) => {
                                 />
                             </div>
                             <textarea
+                                  onClick={(e) => e.stopPropagation()} 
                                 value={commentValue}
                                 onChange={(event) => setCommentValue(event.target.value)}
                                 onKeyDown={handleKeyDown}
