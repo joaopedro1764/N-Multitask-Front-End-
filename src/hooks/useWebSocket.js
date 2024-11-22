@@ -38,14 +38,14 @@ export const useWebSocket = (url) => {
 
 
     useEffect(() => {
-    //if (userCookieString !== undefined) {
+    if (userCookieString !== undefined) {
             connect();
             return () => {
                 if (socketRef.current) {
                     socketRef.current.close();
                 }
             };
-        //}
+        }
     }, [connect]);
     return { socket, isConnected, message, sendMessage };
 };

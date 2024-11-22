@@ -13,10 +13,9 @@ import { useGetMatters } from '../../hooks/useMatters';
 
 export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
 
-
-
-    console.log(taskItem.description);
-
+    if (taskItem.description !== undefined) {
+        console.log(Array.isArray(taskItem.description))
+    }
 
     const { users } = useGetUser();
     const { matters } = useGetMatters()
@@ -281,9 +280,10 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                                 </div>
                             </form>
                             <div className='w-[2px] bg-black' />
-                            <div className="w-1/2 flex flex-col items-start ml-5 overflow-y-auto scrollbar-column bg-blue-400 p-4 rounded-lg">
+                            <div className="w-1/2 flex flex-col items-start ml-5 overflow-y-auto p-4 rounded-lg">
                                 <h3 className="font-bold text-start mb-3">
-                                    {Array.isArray(taskItem.description) && taskItem.description.length !== 0
+
+                                    {Array.isArray(taskItem.description)
                                         ? "Comentário:"
                                         : "Não há comentários."}
                                 </h3>
@@ -296,9 +296,9 @@ export const ModalUpdateTask = ({ open, setOpen, taskItem }) => {
                                             <div className="w-full flex justify-between items-center my-2">
                                                 <div className="flex items-center gap-x-3">
                                                     <img src={"https://nmt.nmultifibra.com.br/notion/ws" + comment.user.profile_image} className="w-8 h-8 rounded-full" />
-                                                    <p className="text-xs text-red-500">{comment.user.name}</p>
+                                                    <p className="text-xs text-[#8E8E8E]">{comment.user.name}</p>
                                                 </div>
-                                                <p className="text-xs text-red-900 font-bold">{comment.date}</p>
+                                                <p className="text-xs text-[#8E8E8E] font-bold">{comment.date}</p>
                                             </div>
 
                                             <div className="w-full h-[2px] bg-black" />

@@ -5,7 +5,7 @@ import { showToast } from "../componentes/Notification/Notification";
 import { useForm } from "react-hook-form"
 
 const loginUser = async (data) => {
-    return await axios.post("http://10.0.30.221:5228/AuthenticateUser", data);
+    return await axios.post("http://10.0.30.147:5228/AuthenticateUser", data);
 }
 
 export const useLogin = () => {

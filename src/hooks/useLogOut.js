@@ -13,7 +13,7 @@ if (userCookieString) {
 
 
 const logoutUser = async () => {
-    return await axios.get("http://10.0.30.221:5228/DeauthenticateUser", {
+    return await axios.get("http://10.0.30.147:5228/DeauthenticateUser", {
         headers: {
             'userauth': userAuth
         }

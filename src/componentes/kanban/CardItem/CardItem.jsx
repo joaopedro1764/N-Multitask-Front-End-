@@ -149,7 +149,7 @@ export const CardItem = ({ task, index, taskItem }) => {
                                 value={commentValue}
                                 onChange={(event) => setCommentValue(event.target.value)}
                                 onKeyDown={handleKeyDown}
-                                className='w-full h-auto mt-2 px-4 py-3 focus:outline-none rounded-md placeholder:text-gray-500 placeholder:font-bold resize-none'
+                                className='w-full h-auto mt-2 px-4 py-3 rounded-md placeholder:text-gray-500 placeholder:font-bold resize-none focus:outline-none focus:ring-4 focus:ring-black'
                                 placeholder='Digite seu comentário...'
                             />
 
